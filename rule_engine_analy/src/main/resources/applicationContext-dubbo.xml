@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+					    http://www.springframework.org/schema/beans/spring-beans.xsd
+					    http://code.alibabatech.com/schema/dubbo
+					    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="rule_engine" owner="taojinn" logger="slf4j" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.zk.url}" timeout="${dubbo.zk.timeout}" />
+
+	<!-- 用dubbo协议在20888端口暴露服务,默认端口20880,将序列化实现设置为kryo -->
+	
+	<dubbo:protocol name="dubbo" port="20883" />
+	<!-- <dubbo:monitor protocol="registry" /> -->
+
+	<!-- 公布的接口 -->	
+	<bean id="engineSnapshotBatchRun" class="com.mobanker.engine.analy.dubbo.EngineSnapshotBatchRunImpl" />
+	<dubbo:service interface="com.mobanker.engine.inner.call.api.EngineSnapshotBatchRun" ref="engineSnapshotBatchRun" retries="0" timeout="180000"/>
+	
+</beans>

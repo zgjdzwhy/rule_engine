@@ -1,0 +1,13 @@
+function sys_setContainOneOfAnother(allset,subset){
+    if(allset.length == 0) return false;
+    if(subset.length == 0) return false;
+    for(var x in subset){
+        var oneSub = subset[x];
+        for(var y in allset){
+            if(oneSub  == allset[y]){
+                  return true;
+            }
+        }
+    }
+    return false;
+}

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"	
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd
+        http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- 加载配置conf.properties -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${jdbc.url}" />
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="maxActive" value="${pool.maxPoolSize}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="true" />
+        <!-- 超时时间；单位为秒。180秒=3分钟 -->
+        <!--<property name="removeAbandonedTimeout" value="${pool.removeAbandonedTimeout}" /> -->
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${pool.maxWait}" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <!-- <property name="timeBetweenEvictionRunsMillis" value="${pool.timeBetweenEvictionRunsMillis}" /> -->
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <!-- <property name="minEvictableIdleTimeMillis" value="${pool.minEvictableIdleTimeMillis}" />
+        <property name="validationQuery" value="${pool.validationQuery} " /> -->
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+    </bean>
+
+    
+
+    <!-- 事务 控制 begin -->
+    <bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- 事务 控制 end -->
+    
+    <!-- 自动扫描mapping文件 start -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <property name="mapperLocations">
+            <list>
+                <!-- 表示在mybatis/mappers包或以下所有目录中，以-Mapper.xml结尾所有文件 -->
+                <value>classpath*:/com/mobanker/**/*.xml</value>
+            </list>
+        </property>
+        <property name="typeAliasesSuperType" value="com.mobanker.framework.entity.BaseEntity" />
+        <property name="configurationProperties">
+            <props>
+                <prop key="dialect">mysql</prop>
+            </props>
+        </property>
+        <property name="plugins">
+            <list>
+                <bean class="com.mobanker.framework.mybatis.SqlInterceptor" />
+            	<bean class="com.mobanker.framework.mybatis.interceptors.EEInterceptor" >
+      				<property name="jdbcUrl" value="${jdbc.url}"/>
+   				</bean>
+            </list>
+        </property>
+    </bean>
+    <!-- 将mapping文件和Dao映射 end -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.mobanker.engine.**.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+    <!-- 自动扫描mapping文件 end -->
+    
+ 
+    <!-- <mongo:mongo id="mongo" replica-set="${mongodb.url}">
+		<mongo:options			
+			connections-per-host="${mongo.connections.per.host}"
+			threads-allowed-to-block-for-connection-multiplier="${mongo.threads.allowed.to.block.for.connection.multiplier}"
+			connect-timeout="${mongo.connect.timeout}"
+			max-wait-time="${mongo.max.wait.time}"
+			auto-connect-retry="${mongo.auto.connect.retry}"
+			socket-keep-alive="${mongo.socket.keep.alive}"
+			socket-timeout="${mongo.socket.timeout}"
+			slave-ok="${mongo.slave.ok}"
+			write-number="${mongo.write.number}"
+			write-timeout="${mongo.write.timeout}"
+			write-fsync="${mongo.write.fsync}"
+	     />
+	</mongo:mongo>
+	
+	<bean id="mongoCredentials" class="org.springframework.data.authentication.UserCredentials">
+  		<constructor-arg  name="username" value="${mongo.username}" /> 
+  		<constructor-arg  name="password" value="${mongo.password}" /> 
+   	</bean>
+	
+	<bean id="mongodbReadPreference" class="com.mongodb.ReadPreference" factory-method="secondaryPreferred" />
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongo" />
+		<constructor-arg name="databaseName" value="${mongodb.databaseName}" />
+		<constructor-arg ref="mongoCredentials"/>
+		<property name="readPreference" ref="mongodbReadPreference" />
+	</bean> -->
+    
+    
+    <context:annotation-config />
+	<context:component-scan base-package="com.mobanker.engine.design.mongo" />   
+	
+	
+	<!-- 为了使得公司的mysql自动生成sql框架 -->
+	<aop:aspectj-autoproxy />
+	<context:component-scan base-package="com.mobanker.framework.crud.**" />
+</beans>

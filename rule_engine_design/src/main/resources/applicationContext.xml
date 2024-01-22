@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd
+        http://www.springframework.org/schema/cache 
+		http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+
+
+	<!-- <context:property-placeholder location="classpath:conf.properties" 
+		ignore-unresolvable="true" /> -->
+
+	<bean class="com.mobanker.zkc.property.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath*:/mobanker.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 文件上传组件 -->
+	<!-- <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+		<property name="defaultEncoding" value="utf-8"/> <property name="maxUploadSize" 
+		value="10485760000"/> <property name="maxInMemorySize" value="40960"/> <property 
+		name="uploadTempDir" value="file://E:/statics"/> </bean> -->
+
+
+
+	<mvc:annotation-driven />
+	<context:annotation-config />
+	<!-- <context:component-scan base-package="com.mobanker.engine.design.controller" /> -->
+
+	<!-- 引入DB数据源 -->
+	<import resource="classpath:/applicationContext-data.xml" />
+	<import resource="classpath:/applicationContext-business.xml" />
+	<import resource="classpath:/applicationContext-cache.xml" />
+	<import resource="classpath:/applicationContext-es.xml" />
+	<import resource="classpath:/applicationContext-hbase.xml" />
+	<import resource="classpath:/applicationContext-dubbo.xml" />
+	
+	<import resource="classpath:/mobanker-servlet.xml" />
+	
+
+	<bean id="loggerAop" class="com.mobanker.engine.common.interceptor.LoggerAop"></bean>
+	<aop:config>
+		<!-- 对dubbo的处理进行日志记录 -->
+		<aop:aspect id="loggerAop" ref="loggerAop">
+			<aop:pointcut id="logPointCut"
+				expression="execution(* com.mobanker.engine.design.controller..*.*(..))" />
+			<aop:around pointcut-ref="logPointCut" method="deal" />
+		</aop:aspect>
+
+	</aop:config>
+	
+	<aop:aspectj-autoproxy />
+	<bean class="com.mobanker.framework.tracking.EEAspect" />
+		
+	
+	
+	<!-- 异步线程池 -->
+	<bean id="threadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+				<!-- 核心线程数  -->
+		<property name="corePoolSize" value="10" />
+				<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="20" />
+				<!-- 队列最大长度 >=mainExecutor.maxSize -->
+		<property name="queueCapacity" value="1000" />
+				<!-- 线程池维护线程所允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+				<!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>	
+	
+	
+	
+</beans>

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mobanker.engine.design.dao.EngProductReleaseFlowDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngProductReleaseFlow" id="EngProductReleaseFlow" />
+
+    <insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngProductReleaseFlow">
+		INSERT INTO eng_product_release_flow
+				(product_type,version,version_name,status,apply_user,apply_time,audit_user1,audit_time1,audit_user2,audit_time2,final_audit_user,final_audit_time,release_time,addtime)
+			VALUES 
+				(#{productType},#{version},#{versionName},#{status},#{applyUser},#{applyTime},#{auditUser1},#{auditTime1},#{auditUser2},#{auditTime2},#{finalAuditUser},#{finalAuditTime},#{releaseTime},#{addtime})	
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_product_release_flow
+		(product_type,version,version_name,status,apply_user,apply_time,audit_user1,audit_time1,audit_user2,audit_time2,final_audit_user,final_audit_time,release_time,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+			(#{item.productType},#{item.version},#{item.versionName},#{item.status},#{item.applyUser},#{item.applyTime},#{item.auditUser1},#{item.auditTime1},#{item.auditUser2},#{item.auditTime2},#{item.finalAuditUser},#{item.finalAuditTime},#{item.releaseTime},#{item.addtime})
+		</foreach>  
+	</insert>
+	
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngProductReleaseFlow">
+		update eng_product_release_flow 
+		<set>
+			product_type=#{productType},
+version=#{version},
+version_name=#{versionName},
+status=#{status},
+apply_user=#{applyUser},
+apply_time=#{applyTime},
+audit_user1=#{auditUser1},
+audit_time1=#{auditTime1},
+audit_user2=#{auditUser2},
+audit_time2=#{auditTime2},
+final_audit_user=#{finalAuditUser},
+final_audit_time=#{finalAuditTime},
+release_time=#{releaseTime},
+addtime=#{addtime},
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngProductReleaseFlow">
+		update eng_product_release_flow 
+		<set>
+			<if test="productType != null">product_type=#{productType},</if>
+<if test="version != null">version=#{version},</if>
+<if test="versionName != null">version_name=#{versionName},</if>
+<if test="status != null">status=#{status},</if>
+<if test="applyUser != null">apply_user=#{applyUser},</if>
+<if test="applyTime != null">apply_time=#{applyTime},</if>
+<if test="auditUser1 != null">audit_user1=#{auditUser1},</if>
+<if test="auditTime1 != null">audit_time1=#{auditTime1},</if>
+<if test="auditUser2 != null">audit_user2=#{auditUser2},</if>
+<if test="auditTime2 != null">audit_time2=#{auditTime2},</if>
+<if test="finalAuditUser != null">final_audit_user=#{finalAuditUser},</if>
+<if test="finalAuditTime != null">final_audit_time=#{finalAuditTime},</if>
+<if test="releaseTime != null">release_time=#{releaseTime},</if>
+<if test="addtime != null">addtime=#{addtime},</if>
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_product_release_flow 
+		<set>
+			<if test="des.productType != null">product_type=#{des.productType},</if>
+<if test="des.version != null">version=#{des.version},</if>
+<if test="des.versionName != null">version_name=#{des.versionName},</if>
+<if test="des.status != null">status=#{des.status},</if>
+<if test="des.applyUser != null">apply_user=#{des.applyUser},</if>
+<if test="des.applyTime != null">apply_time=#{des.applyTime},</if>
+<if test="des.auditUser1 != null">audit_user1=#{des.auditUser1},</if>
+<if test="des.auditTime1 != null">audit_time1=#{des.auditTime1},</if>
+<if test="des.auditUser2 != null">audit_user2=#{des.auditUser2},</if>
+<if test="des.auditTime2 != null">audit_time2=#{des.auditTime2},</if>
+<if test="des.finalAuditUser != null">final_audit_user=#{des.finalAuditUser},</if>
+<if test="des.finalAuditTime != null">final_audit_time=#{des.finalAuditTime},</if>
+<if test="des.releaseTime != null">release_time=#{des.releaseTime},</if>
+<if test="des.addtime != null">addtime=#{des.addtime},</if>
+
+		</set>
+			<where> 
+				<if test="src.productType==null and src.version==null and src.versionName==null and src.status==null and src.applyUser==null and src.applyTime==null and src.auditUser1==null and src.auditTime1==null and src.auditUser2==null and src.auditTime2==null and src.finalAuditUser==null and src.finalAuditTime==null and src.releaseTime==null and src.addtime==null ">and 1!=1</if>
+				
+<if test="src.productType != null">and product_type=#{src.productType}</if>
+<if test="src.version != null">and version=#{src.version}</if>
+<if test="src.versionName != null">and version_name=#{src.versionName}</if>
+<if test="src.status != null">and status=#{src.status}</if>
+<if test="src.applyUser != null">and apply_user=#{src.applyUser}</if>
+<if test="src.applyTime != null">and apply_time=#{src.applyTime}</if>
+<if test="src.auditUser1 != null">and audit_user1=#{src.auditUser1}</if>
+<if test="src.auditTime1 != null">and audit_time1=#{src.auditTime1}</if>
+<if test="src.auditUser2 != null">and audit_user2=#{src.auditUser2}</if>
+<if test="src.auditTime2 != null">and audit_time2=#{src.auditTime2}</if>
+<if test="src.finalAuditUser != null">and final_audit_user=#{src.finalAuditUser}</if>
+<if test="src.finalAuditTime != null">and final_audit_time=#{src.finalAuditTime}</if>
+<if test="src.releaseTime != null">and release_time=#{src.releaseTime}</if>
+<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+			</where>  
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngProductReleaseFlow">
+		delete from eng_product_release_flow 
+			where id = #{id}
+	</delete>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_product_release_flow 
+			where id = #{id}
+	</delete>
+	
+	
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="Long">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			where id = #{id}
+	</select>
+	
+	
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="com.mobanker.engine.design.pojo.EngProductReleaseFlow">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			<where> 
+				
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="version != null">and version=#{version}</if>
+<if test="versionName != null">and version_name=#{versionName}</if>
+<if test="status != null">and status=#{status}</if>
+<if test="applyUser != null">and apply_user=#{applyUser}</if>
+<if test="applyTime != null">and apply_time=#{applyTime}</if>
+<if test="auditUser1 != null">and audit_user1=#{auditUser1}</if>
+<if test="auditTime1 != null">and audit_time1=#{auditTime1}</if>
+<if test="auditUser2 != null">and audit_user2=#{auditUser2}</if>
+<if test="auditTime2 != null">and audit_time2=#{auditTime2}</if>
+<if test="finalAuditUser != null">and final_audit_user=#{finalAuditUser}</if>
+<if test="finalAuditTime != null">and final_audit_time=#{finalAuditTime}</if>
+<if test="releaseTime != null">and release_time=#{releaseTime}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+				order by id desc limit 1
+	</select>
+	
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="com.mobanker.engine.design.pojo.EngProductReleaseFlow">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			<where> 
+				
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="version != null">and version=#{version}</if>
+<if test="versionName != null">and version_name=#{versionName}</if>
+<if test="status != null">and status=#{status}</if>
+<if test="applyUser != null">and apply_user=#{applyUser}</if>
+<if test="applyTime != null">and apply_time=#{applyTime}</if>
+<if test="auditUser1 != null">and audit_user1=#{auditUser1}</if>
+<if test="auditTime1 != null">and audit_time1=#{auditTime1}</if>
+<if test="auditUser2 != null">and audit_user2=#{auditUser2}</if>
+<if test="auditTime2 != null">and audit_time2=#{auditTime2}</if>
+<if test="finalAuditUser != null">and final_audit_user=#{finalAuditUser}</if>
+<if test="finalAuditTime != null">and final_audit_time=#{finalAuditTime}</if>
+<if test="releaseTime != null">and release_time=#{releaseTime}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+	</select>
+	
+	
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="java.util.Map">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow
+		<where>  
+			
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="version != null">and version=#{version}</if>
+<if test="versionName != null">and version_name=#{versionName}</if>
+<if test="status != null">and status=#{status}</if>
+<if test="applyUser != null">and apply_user=#{applyUser}</if>
+<if test="applyTime != null">and apply_time=#{applyTime}</if>
+<if test="auditUser1 != null">and audit_user1=#{auditUser1}</if>
+<if test="auditTime1 != null">and audit_time1=#{auditTime1}</if>
+<if test="auditUser2 != null">and audit_user2=#{auditUser2}</if>
+<if test="auditTime2 != null">and audit_time2=#{auditTime2}</if>
+<if test="finalAuditUser != null">and final_audit_user=#{finalAuditUser}</if>
+<if test="finalAuditTime != null">and final_audit_time=#{finalAuditTime}</if>
+<if test="releaseTime != null">and release_time=#{releaseTime}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			
+<if test="productTypeList != null">and product_type in <foreach collection="productTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="versionList != null">and version in <foreach collection="versionList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="versionNameList != null">and version_name in <foreach collection="versionNameList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="statusList != null">and status in <foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="applyUserList != null">and apply_user in <foreach collection="applyUserList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="applyTimeList != null">and apply_time in <foreach collection="applyTimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="auditUser1List != null">and audit_user1 in <foreach collection="auditUser1List" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="auditTime1List != null">and audit_time1 in <foreach collection="auditTime1List" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="auditUser2List != null">and audit_user2 in <foreach collection="auditUser2List" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="auditTime2List != null">and audit_time2 in <foreach collection="auditTime2List" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="finalAuditUserList != null">and final_audit_user in <foreach collection="finalAuditUserList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="finalAuditTimeList != null">and final_audit_time in <foreach collection="finalAuditTimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="releaseTimeList != null">and release_time in <foreach collection="releaseTimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="addtimeList != null">and addtime in <foreach collection="addtimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		</where>  
+	</select>	
+	
+	
+	
+	<select id="queryByProductType" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="java.lang.String">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			where product_type = #{productType}
+	</select>
+	
+	<select id="queryCountByProductType" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_product_release_flow 
+			where product_type = #{productType}
+	</select>
+
+	<select id="queryLastOneByProductType" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="java.lang.String">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			where product_type = #{productType} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeProductType" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="java.util.List">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeProductType" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_product_release_flow 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<select id="queryByApplyUser" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="java.lang.String">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			where apply_user = #{applyUser}
+	</select>
+	
+	<select id="queryCountByApplyUser" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_product_release_flow 
+			where apply_user = #{applyUser}
+	</select>
+
+	<select id="queryLastOneByApplyUser" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="java.lang.String">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			where apply_user = #{applyUser} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeApplyUser" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="java.util.List">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,release_time as releaseTime,addtime as addtime from eng_product_release_flow 
+			where apply_user in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeApplyUser" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_product_release_flow 
+			where apply_user in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+	<!-- *********************************************************************************** -->
+
+
+	<select id="showList" resultType="com.mobanker.engine.design.pojo.EngProductReleaseFlow" parameterType="com.mobanker.engine.design.pojo.EngProductReleaseFlow">
+		select id as id,product_type as productType,version as version,version_name as versionName,status as status,apply_user as applyUser,apply_time as applyTime,audit_user1 as auditUser1,audit_time1 as auditTime1,audit_user2 as auditUser2,audit_time2 as auditTime2,final_audit_user as finalAuditUser,final_audit_time as finalAuditTime,addtime as addtime 
+			from eng_product_release_flow 
+			<where> 				
+				<if test="productType != null">and product_type=#{productType}</if>
+				<if test="version != null">and version like CONCAT('%','${version}','%') </if>
+				<if test="applyUser != null">and apply_user=#{applyUser}</if>
+				<if test="status != null">and status=#{status}</if>
+			</where>  
+				order by addtime desc limit 50
+	</select>
+</mapper>

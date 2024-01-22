@@ -1,0 +1,3 @@
+function sys_strContain(str,containedStr){
+	return str.indexOf(containedStr)>-1;
+}

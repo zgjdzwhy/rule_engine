@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mobanker.engine.design.dao.EngQueryHostDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngQueryHost" id="EngQueryHost" />
+
+    <insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngQueryHost">
+		INSERT INTO eng_query_host
+				(url,url_param_keys,url_type,timeout,product_type,fatal_deal,memo)
+			VALUES 
+				(#{url},#{urlParamKeys},#{urlType},#{timeout},#{productType},#{fatalDeal},#{memo})	
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_query_host
+		(url,url_param_keys,url_type,timeout,product_type,fatal_deal,memo)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+			(#{item.url},#{item.urlParamKeys},#{item.urlType},#{item.timeout},#{item.productType},#{item.fatalDeal},#{item.memo})
+		</foreach>  
+	</insert>
+	
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngQueryHost">
+		update eng_query_host 
+		<set>
+			url=#{url},
+url_param_keys=#{urlParamKeys},
+url_type=#{urlType},
+timeout=#{timeout},
+product_type=#{productType},
+fatal_deal=#{fatalDeal},
+memo=#{memo},
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngQueryHost">
+		update eng_query_host 
+		<set>
+			<if test="url != null">url=#{url},</if>
+<if test="urlParamKeys != null">url_param_keys=#{urlParamKeys},</if>
+<if test="urlType != null">url_type=#{urlType},</if>
+<if test="timeout != null">timeout=#{timeout},</if>
+<if test="productType != null">product_type=#{productType},</if>
+<if test="fatalDeal != null">fatal_deal=#{fatalDeal},</if>
+<if test="memo != null">memo=#{memo},</if>
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_query_host 
+		<set>
+			<if test="des.url != null">url=#{des.url},</if>
+<if test="des.urlParamKeys != null">url_param_keys=#{des.urlParamKeys},</if>
+<if test="des.urlType != null">url_type=#{des.urlType},</if>
+<if test="des.timeout != null">timeout=#{des.timeout},</if>
+<if test="des.productType != null">product_type=#{des.productType},</if>
+<if test="des.fatalDeal != null">fatal_deal=#{des.fatalDeal},</if>
+<if test="des.memo != null">memo=#{des.memo},</if>
+
+		</set>
+			<where> 
+				<if test="src.url==null and src.urlParamKeys==null and src.urlType==null and src.timeout==null and src.productType==null and src.fatalDeal==null and src.memo==null ">and 1!=1</if>
+				
+<if test="src.url != null">and url=#{src.url}</if>
+<if test="src.urlParamKeys != null">and url_param_keys=#{src.urlParamKeys}</if>
+<if test="src.urlType != null">and url_type=#{src.urlType}</if>
+<if test="src.timeout != null">and timeout=#{src.timeout}</if>
+<if test="src.productType != null">and product_type=#{src.productType}</if>
+<if test="src.fatalDeal != null">and fatal_deal=#{src.fatalDeal}</if>
+<if test="src.memo != null">and memo=#{src.memo}</if>
+			</where>  
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngQueryHost">
+		delete from eng_query_host 
+			where id = #{id}
+	</delete>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_query_host 
+			where id = #{id}
+	</delete>
+	
+	
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngQueryHost" parameterType="Long">
+		select id as id,url as url,url_param_keys as urlParamKeys,url_type as urlType,timeout as timeout,product_type as productType,fatal_deal as fatalDeal,memo as memo from eng_query_host 
+			where id = #{id}
+	</select>
+	
+	
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngQueryHost" parameterType="com.mobanker.engine.design.pojo.EngQueryHost">
+		select id as id,url as url,url_param_keys as urlParamKeys,url_type as urlType,timeout as timeout,product_type as productType,fatal_deal as fatalDeal,memo as memo from eng_query_host 
+			<where> 
+				
+<if test="url != null">and url=#{url}</if>
+<if test="urlParamKeys != null">and url_param_keys=#{urlParamKeys}</if>
+<if test="urlType != null">and url_type=#{urlType}</if>
+<if test="timeout != null">and timeout=#{timeout}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="fatalDeal != null">and fatal_deal=#{fatalDeal}</if>
+<if test="memo != null">and memo=#{memo}</if>
+			</where>  
+				order by id desc limit 1
+	</select>
+	
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngQueryHost" parameterType="com.mobanker.engine.design.pojo.EngQueryHost">
+		select id as id,url as url,url_param_keys as urlParamKeys,url_type as urlType,timeout as timeout,product_type as productType,fatal_deal as fatalDeal,memo as memo from eng_query_host 
+			<where> 
+				
+<if test="url != null">and url=#{url}</if>
+<if test="urlParamKeys != null">and url_param_keys=#{urlParamKeys}</if>
+<if test="urlType != null">and url_type=#{urlType}</if>
+<if test="timeout != null">and timeout=#{timeout}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="fatalDeal != null">and fatal_deal=#{fatalDeal}</if>
+<if test="memo != null">and memo=#{memo}</if>
+			</where>  
+	</select>
+	
+	
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngQueryHost" parameterType="java.util.Map">
+		select id as id,url as url,url_param_keys as urlParamKeys,url_type as urlType,timeout as timeout,product_type as productType,fatal_deal as fatalDeal,memo as memo from eng_query_host
+		<where>  
+			
+<if test="url != null">and url=#{url}</if>
+<if test="urlParamKeys != null">and url_param_keys=#{urlParamKeys}</if>
+<if test="urlType != null">and url_type=#{urlType}</if>
+<if test="timeout != null">and timeout=#{timeout}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="fatalDeal != null">and fatal_deal=#{fatalDeal}</if>
+<if test="memo != null">and memo=#{memo}</if>
+			
+<if test="urlList != null">and url in <foreach collection="urlList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="urlParamKeysList != null">and url_param_keys in <foreach collection="urlParamKeysList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="urlTypeList != null">and url_type in <foreach collection="urlTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="timeoutList != null">and timeout in <foreach collection="timeoutList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="productTypeList != null">and product_type in <foreach collection="productTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="fatalDealList != null">and fatal_deal in <foreach collection="fatalDealList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="memoList != null">and memo in <foreach collection="memoList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		</where>  
+	</select>	
+	
+	
+	
+	<select id="queryByProductType" resultType="com.mobanker.engine.design.pojo.EngQueryHost" parameterType="java.lang.String">
+		select id as id,url as url,url_param_keys as urlParamKeys,url_type as urlType,timeout as timeout,product_type as productType,fatal_deal as fatalDeal,memo as memo from eng_query_host 
+			where product_type = #{productType}
+	</select>
+	
+	<select id="queryCountByProductType" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_query_host 
+			where product_type = #{productType}
+	</select>
+
+	<select id="queryLastOneByProductType" resultType="com.mobanker.engine.design.pojo.EngQueryHost" parameterType="java.lang.String">
+		select id as id,url as url,url_param_keys as urlParamKeys,url_type as urlType,timeout as timeout,product_type as productType,fatal_deal as fatalDeal,memo as memo from eng_query_host 
+			where product_type = #{productType} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeProductType" resultType="com.mobanker.engine.design.pojo.EngQueryHost" parameterType="java.util.List">
+		select id as id,url as url,url_param_keys as urlParamKeys,url_type as urlType,timeout as timeout,product_type as productType,fatal_deal as fatalDeal,memo as memo from eng_query_host 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeProductType" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_query_host 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+
+</mapper>

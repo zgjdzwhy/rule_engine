@@ -1,0 +1,8 @@
+判断一个集合中某一个是否包含于另一个集合中，
+若包含返回true。
+不包含返回false。
+举例：
+var allset=["abcd","efgh"];
+sys_setContainOneOfAnother(allset,["abcd","hijk"]);    ----- true "abcd" 包含于于集合allset中  
+sys_setContainOneOfAnother(allset,["a"]); 	----- false "a"不包含于于集合allset中     
+sys_setContainOneOfAnother(allset,[""]);    ----- false ""不包含于于集合allset中

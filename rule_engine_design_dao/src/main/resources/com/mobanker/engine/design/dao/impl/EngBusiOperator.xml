@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobanker.engine.design.dao.EngBusiOperatorDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngBusiOperator"
+		id="EngBusiOperator" />
+
+	<insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngBusiOperator">
+		INSERT INTO eng_busi_operator
+		(name,username,password,product_ids,role,group_id,addtime)
+		VALUES
+		(#{name},#{username},#{password},#{productIds},#{role},#{groupId},#{addtime})
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_busi_operator
+		(name,username,password,product_ids,role,group_id,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.name},#{item.username},#{item.password},#{item.productIds},#{item.role},#{item.groupId},#{item.addtime})
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngBusiOperator">
+		update eng_busi_operator
+		<set>
+			name=#{name}, username=#{username}, password=#{password},
+			product_ids=#{productIds}, role=#{role}, group_id=#{groupId}, addtime=#{addtime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngBusiOperator">
+		update eng_busi_operator
+		<set>
+			<if test="name != null">name=#{name},</if>
+			<if test="username != null">username=#{username},</if>
+			<if test="password != null">password=#{password},</if>
+			<if test="productIds != null">product_ids=#{productIds},</if>
+			<if test="role != null">role=#{role},</if>
+			<if test="groupId != null">group_id=#{groupId},</if>
+			<if test="addtime != null">addtime=#{addtime},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_busi_operator
+		<set>
+			<if test="des.name != null">name=#{des.name},</if>
+			<if test="des.username != null">username=#{des.username},</if>
+			<if test="des.password != null">password=#{des.password},</if>
+			<if test="des.productIds != null">product_ids=#{des.productIds},</if>
+			<if test="des.role != null">role=#{des.role},</if>
+			<if test="des.groupId != null">group_id=#{des.groupId},</if>
+			<if test="des.addtime != null">addtime=#{des.addtime},</if>
+		</set>
+		<where>
+			<if
+				test="src.name==null and src.username==null and src.password==null and src.productIds==null and src.role==null and src.groupId==null and src.addtime==null ">and 1!=1</if>
+
+			<if test="src.name != null">and name=#{src.name}</if>
+			<if test="src.username != null">and username=#{src.username}</if>
+			<if test="src.password != null">and password=#{src.password}</if>
+			<if test="src.productIds != null">and product_ids=#{src.productIds}</if>
+			<if test="src.role != null">and role=#{src.role}</if>
+			<if test="src.groupId != null">and group_id=#{src.groupId}</if>
+			<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngBusiOperator">
+		delete from eng_busi_operator
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteById" parameterType="Long">
+		delete from
+		eng_busi_operator
+		where id = #{id}
+	</delete>
+
+
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="Long">
+		select id as id,name as name,username as
+		username,password as password,product_ids as productIds,role as
+		role,group_id as groupId,addtime as addtime from eng_busi_operator
+		where id = #{id}
+	</select>
+
+
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="com.mobanker.engine.design.pojo.EngBusiOperator">
+		select id as id,name as name,username as username,password as
+		password,product_ids as productIds,role as role,group_id as groupId,addtime as addtime
+		from eng_busi_operator
+		<where>
+
+			<if test="name != null">and name=#{name}</if>
+			<if test="username != null">and username=#{username}</if>
+			<if test="password != null">and password=#{password}</if>
+			<if test="productIds != null">and product_ids=#{productIds}</if>
+			<if test="role != null">and role=#{role}</if>
+			<if test="groupId != null">and group_id=#{groupId}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+		order by id desc limit 1
+	</select>
+
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="com.mobanker.engine.design.pojo.EngBusiOperator">
+		select id as id,name as name,username as username,password as
+		password,product_ids as productIds,role as role,group_id as groupId,addtime as addtime
+		from eng_busi_operator
+		<where>
+
+			<if test="name != null">and name=#{name}</if>
+			<if test="username != null">and username=#{username}</if>
+			<if test="password != null">and password=#{password}</if>
+			<if test="productIds != null">and product_ids=#{productIds}</if>
+			<if test="role != null">and role=#{role}</if>
+			<if test="groupId != null">and group_id=#{groupId}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+	</select>
+
+
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="java.util.Map">
+		select id as id,name as name,username as username,password as
+		password,product_ids as productIds,role as role,group_id as groupId,addtime as addtime
+		from eng_busi_operator
+		<where>
+
+			<if test="name != null">and name=#{name}</if>
+			<if test="username != null">and username=#{username}</if>
+			<if test="password != null">and password=#{password}</if>
+			<if test="productIds != null">and product_ids=#{productIds}</if>
+			<if test="role != null">and role=#{role}</if>
+			<if test="groupId != null">and group_id=#{groupId}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+
+			<if test="nameList != null">
+				and name in
+				<foreach collection="nameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="usernameList != null">
+				and username in
+				<foreach collection="usernameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="passwordList != null">
+				and password in
+				<foreach collection="passwordList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="productIdsList != null">
+				and product_ids in
+				<foreach collection="productIdsList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="roleList != null">
+				and role in
+				<foreach collection="roleList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="groupIdList != null">
+				and role in
+				<foreach collection="groupIdList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="addtimeList != null">
+				and addtime in
+				<foreach collection="addtimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="queryByUsername" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="java.lang.String">
+		select id as id,name as name,username as
+		username,password as password,product_ids as productIds,role as
+		role,group_id as groupId,addtime as addtime from eng_busi_operator
+		where username = #{username}
+	</select>
+
+	<select id="queryCountByUsername" resultType="int"
+		parameterType="java.lang.String">
+		select count(1) from eng_busi_operator
+		where username = #{username}
+	</select>
+
+	<select id="queryLastOneByUsername" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="java.lang.String">
+		select id as id,name as name,username as
+		username,password as password,product_ids as productIds,role as
+		role,group_id as groupId,addtime as addtime from eng_busi_operator
+		where username = #{username} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeUsername" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="java.util.List">
+		select id as id,name as name,username as username,password as
+		password,product_ids as productIds,role as role,group_id as groupId,addtime as addtime
+		from eng_busi_operator
+		where username in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeUsername" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_busi_operator
+		where username in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+	<select id="queryByProductIds" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="java.lang.String">
+		select id as id,name as name,username as
+		username,password as password,product_ids as productIds,role as
+		role,group_id as groupId,addtime as addtime from eng_busi_operator
+		where product_ids = #{productIds}
+	</select>
+
+	<select id="queryCountByProductIds" resultType="int"
+		parameterType="java.lang.String">
+		select count(1) from eng_busi_operator
+		where product_ids = #{productIds}
+	</select>
+
+	<select id="queryLastOneByProductIds" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="java.lang.String">
+		select id as id,name as name,username as
+		username,password as password,product_ids as productIds,role as
+		role,group_id as groupId,addtime as addtime from eng_busi_operator
+		where product_ids = #{productIds} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeProductIds" resultType="com.mobanker.engine.design.pojo.EngBusiOperator"
+		parameterType="java.util.List">
+		select id as id,name as name,username as username,password as
+		password,product_ids as productIds,role as role,group_id as groupId,addtime as addtime
+		from eng_busi_operator
+		where product_ids in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeProductIds" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_busi_operator
+		where product_ids in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+</mapper>

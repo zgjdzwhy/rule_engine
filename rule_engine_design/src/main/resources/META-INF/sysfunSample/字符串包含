@@ -1,0 +1,10 @@
+判断一个字段是否包含于字符串中，
+若包含返回true。
+不包含返回false。
+举例：
+var str="abcd";
+sys_strContain(str,"a");     ----- ture "a"包含于"abcd"中         
+sys_strContain(str,"abcd");  ----- ture "abcd"包含于"abcd"中
+sys_strContain(str,"");      ----- ture ""包含于"abcd"中         
+sys_strContain(str,"e");     ----- false "e"不包含于"abcd"中    
+sys_strContain(str,"abcde"); ----- false "abcde"不包含于"abcd"中

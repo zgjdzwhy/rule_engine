@@ -1,0 +1,21 @@
+判断一个集合中某一个字段是否包含于另一个集合中，（关键字包含），
+若包含返回true。
+不包含返回false。
+举例：
+var allarr=["abcd"];
+sys_setContainKeywords(allarr,["a","x"]);    ----- true "a" 包含于于集合"abcd"中  
+sys_setContainKeywords(allarr,[""]); 	   ----- true "" 包含于于集合"abcd"中     
+sys_setContainKeywords(allarr,["abcd","gdsd"]); ----- true "abcd" 包含于于集合"abcd"中 
+sys_setContainKeywords(allarr,["x"]);    ----- false "x" 不包含于于集合中 
+sys_setContainKeywords(allarr,["efghi"]);----- false "efghi"不包含于于集合"efgh"中   
+
+实际业务中类似于如下方法重复且不利于维护：
+if(sys_strContain(input.#公司名称#,"链家")||
+	sys_strContain(input.#公司名称#,"中原")||
+	sys_strContain(input.#公司名称#,"人人")){
+	_result=true;
+	}
+	
+可以使用当前函数,提高了维护性：
+var name=["链家","中原","人人"];
+_result=sys_setContainKeywords([input.#公司名称#],name);

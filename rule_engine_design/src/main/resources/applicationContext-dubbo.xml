@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://code.alibabatech.com/schema/dubbo
+		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="rule_engine" owner="taojinn" logger="slf4j" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.zk.url}" timeout="${dubbo.zk.timeout}" />
+
+	<!-- 用dubbo协议在20888端口暴露服务,默认端口20880,将序列化实现设置为kryo -->
+	
+	<dubbo:protocol name="dubbo" port="20882" />
+	<dubbo:monitor protocol="registry" />
+
+
+	<!-- 消费端全局配置 -->
+	<dubbo:consumer check="false" timeout="30000"/>
+
+	<!-- 引用的接口 -->
+	<dubbo:reference interface="com.mobanker.safe.business.contract.EncryptManager" id="encryptManager" check="false"/>
+	<dubbo:reference interface="com.mobanker.safe.business.contract.DecryptManager" id="decryptManager" check="false"/>
+		
+	<dubbo:reference interface="com.mobanker.engine.inner.call.api.EngineSnapshotBatchRun" id="engineSnapshotBatchRun" check="false" async="false"/>	
+
+</beans>

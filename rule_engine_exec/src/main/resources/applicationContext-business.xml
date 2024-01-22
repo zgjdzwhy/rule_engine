@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <context:annotation-config />
+	
+	<context:component-scan base-package="com.mobanker.engine.exec.business.invoke" />
+
+	<!-- <context:component-scan base-package="com.mobanker.engine.exec.business.product" /> -->	
+	<bean id="engineRuntimeProductManager" class="com.mobanker.engine.framkwork.promanager.EngineRuntimeProductManagerImpl"/>
+	
+	<!-- <bean id="engineRuntimePersistence" class="com.mobanker.engine.framkwork.data.impl.EngineRuntimePersistenceImpl"/> -->	
+	<!-- <bean id="engineRuntimePersistence" class="com.mobanker.engine.exec.business.snapshot.EngineQueueEsPersistenceImpl"/> -->
+	<bean id="engineRuntimePersistence" class="com.mobanker.engine.framkwork.data.impl.EngineHbasePersistenceImpl"/>
+	
+	<bean id="engineTaskLauncher" class="com.mobanker.engine.framkwork.entry.EngineTaskLauncher">
+		<property name="engineRuntimePersistence" ref="engineRuntimePersistence"/>
+	</bean>
+			
+	<!-- 用于监听任务的线程池 这个线程池需要独立使用 别的应用不可以使用此线程池 -->
+	<bean id="engineThreadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数  -->
+		<property name="corePoolSize" value="10" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="20" />
+		<!-- 队列最大长度 >=mainExecutor.maxSize -->
+		<property name="queueCapacity" value="1000" />
+		<!-- 线程池维护线程所允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>			
+ 	
+
+	<!-- *********************************** 规则模型监听 *********************************** -->	
+	<bean id="engineRuleModelWatcher" class="com.mobanker.engine.exec.watcher.hotdeploy.EngineRuleModelWatcher">
+		<property name="zkAddress" value="${dubbo.zk.url}"/>
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>	
+		<property name="engineRuntimeProductManager" ref="engineRuntimeProductManager"/>			
+	</bean>		
+
+	<!-- *********************************** 任务开关监听 *********************************** -->	
+	<bean id="engineTaskExecSwitchWatcher" class="com.mobanker.engine.exec.business.zk.taskassign.EngineTaskExecSwitchWatcherImpl">
+		<property name="zkAddress" value="${dubbo.zk.url}"/>
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>			
+	</bean>		
+	
+	<!-- *********************************** 快照队列服务 *********************************** -->	
+	<!-- 迁入hbase后 不再使用  保证启动，bean先保留-->
+	 <bean id="engineParamSnapshotService" class="com.mobanker.engine.exec.business.snapshot.EngineParamSnapshotService">
+		<property name="turnSize" value="${ruleconfig.snapshot.turnsize}"/>			
+	</bean>	 
+</beans>

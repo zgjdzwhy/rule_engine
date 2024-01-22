@@ -1,0 +1,7 @@
+function sys_str2date(str){
+    str = str.substring(0,4)+'/'+str.substring(4,6)+'/'+
+        str.substring(6,8)+' '+str.substring(8,10)+':'+
+        str.substring(10,12)+':'+str.substring(12,14);
+    date = new Date(Date.parse(str));
+    return date;
+}

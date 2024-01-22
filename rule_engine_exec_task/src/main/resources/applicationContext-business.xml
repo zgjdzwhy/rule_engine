@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <context:annotation-config />
+        
+    
+	<context:component-scan base-package="com.mobanker.engine.exec.taskget.job" />	
+	
+	<!-- *********************************** 选举结果监听 *********************************** -->
+	<bean id="engineClusterLeaderService" class="com.mobanker.engine.exec.business.zk.leader.EngineClusterLeaderServiceImpl">
+		<property name="zkAddress" value="${dubbo.zk.url}"/>
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>					
+	</bean>		
+		
+		
+	<!-- *********************************** 控制任务分配的开关 *********************************** -->
+	<!-- <bean id="engineTaskAssignSwitchService" class="com.mobanker.engine.exec.business.zk.taskassign.EngineTaskAssignSwitchServiceImpl">
+		<property name="zkAddress" value="${dubbo.zk.url}"/>
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>	
+	</bean>	 	 -->	
+		
+	<!-- *********************************** 任务分配开关监听 *********************************** -->	
+	<!-- <bean id="engineTaskAssignSwitchWatcher" class="com.mobanker.engine.exec.watcher.taskassign.EngineTaskAssignSwitchWatcher">
+		<property name="zkAddress" value="${dubbo.zk.url}"/>
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>					
+	</bean>	 -->	
+		
+</beans>

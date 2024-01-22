@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobanker.engine.framkwork.data.dao.EngineStepInfoDao">
+
+	<parameterMap
+		type="com.mobanker.engine.framkwork.data.entity.EngineStepInfo" id="EngineStepInfo" />
+
+	<insert id="insert"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo">
+		INSERT INTO eng_step_info
+		(task_id,task_time,app_name,app_request_id,step_num,step_bean,step_name,status,consume,addtime)
+		VALUES
+		(#{taskId},#{taskTime},#{appName},#{appRequestId},#{stepNum},#{stepBean},#{stepName},#{status},#{consume},#{addtime})
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_step_info
+		(task_id,task_time,app_name,app_request_id,step_num,step_bean,step_name,status,consume,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.taskId},#{item.taskTime},#{item.appName},#{item.appRequestId},#{item.stepNum},#{item.stepBean},#{item.stepName},#{item.status},#{item.consume},#{item.addtime})
+		</foreach>
+	</insert>
+
+	<update id="update"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo">
+		update eng_step_info
+		<set>
+			task_id=#{taskId}, task_time=#{taskTime}, app_name=#{appName},
+			app_request_id=#{appRequestId}, step_num=#{stepNum},
+			step_bean=#{stepBean}, step_name=#{stepName}, status=#{status},
+			consume=#{consume}, addtime=#{addtime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateField"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo">
+		update eng_step_info
+		<set>
+			<if test="taskId != null">task_id=#{taskId},</if>
+			<if test="taskTime != null">task_time=#{taskTime},</if>
+			<if test="appName != null">app_name=#{appName},</if>
+			<if test="appRequestId != null">app_request_id=#{appRequestId},</if>
+			<if test="stepNum != null">step_num=#{stepNum},</if>
+			<if test="stepBean != null">step_bean=#{stepBean},</if>
+			<if test="stepName != null">step_name=#{stepName},</if>
+			<if test="status != null">status=#{status},</if>
+			<if test="consume != null">consume=#{consume},</if>
+			<if test="addtime != null">addtime=#{addtime},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_step_info
+		<set>
+			<if test="des.taskId != null">task_id=#{des.taskId},</if>
+			<if test="des.taskTime != null">task_time=#{des.taskTime},</if>
+			<if test="des.appName != null">app_name=#{des.appName},</if>
+			<if test="des.appRequestId != null">app_request_id=#{des.appRequestId},</if>
+			<if test="des.stepNum != null">step_num=#{des.stepNum},</if>
+			<if test="des.stepBean != null">step_bean=#{des.stepBean},</if>
+			<if test="des.stepName != null">step_name=#{des.stepName},</if>
+			<if test="des.status != null">status=#{des.status},</if>
+			<if test="des.consume != null">consume=#{des.consume},</if>
+			<if test="des.addtime != null">addtime=#{des.addtime},</if>
+		</set>
+		<where>
+			<if
+				test="src.taskId==null and src.taskTime==null and src.appName==null and src.appRequestId==null and src.stepNum==null and src.stepBean==null and src.stepName==null and src.status==null and src.consume==null and src.addtime==null ">and 1!=1</if>
+
+			<if test="src.taskId != null">and task_id=#{src.taskId}</if>
+			<if test="src.taskTime != null">and task_time=#{src.taskTime}</if>
+			<if test="src.appName != null">and app_name=#{src.appName}</if>
+			<if test="src.appRequestId != null">and app_request_id=#{src.appRequestId}</if>
+			<if test="src.stepNum != null">and step_num=#{src.stepNum}</if>
+			<if test="src.stepBean != null">and step_bean=#{src.stepBean}</if>
+			<if test="src.stepName != null">and step_name=#{src.stepName}</if>
+			<if test="src.status != null">and status=#{src.status}</if>
+			<if test="src.consume != null">and consume=#{src.consume}</if>
+			<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+		</where>
+	</update>
+
+	<delete id="delete"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo">
+		delete from eng_step_info
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_step_info
+		where id = #{id}
+	</delete>
+
+
+	<select id="get"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="Long">
+		select id as id,task_id as taskId,task_time as
+		taskTime,app_name as appName,app_request_id as appRequestId,step_num
+		as stepNum,step_bean as stepBean,step_name as stepName,status as
+		status,consume as consume,addtime as addtime from eng_step_info
+		where id = #{id}
+	</select>
+
+
+	<select id="queryLastOneByField"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo">
+		select id as id,task_id as taskId,task_time as taskTime,app_name as
+		appName,app_request_id as appRequestId,step_num as stepNum,step_bean
+		as stepBean,step_name as stepName,status as status,consume as
+		consume,addtime as addtime from eng_step_info
+		<where>
+
+			<if test="taskId != null">and task_id=#{taskId}</if>
+			<if test="taskTime != null">and task_time=#{taskTime}</if>
+			<if test="appName != null">and app_name=#{appName}</if>
+			<if test="appRequestId != null">and app_request_id=#{appRequestId}</if>
+			<if test="stepNum != null">and step_num=#{stepNum}</if>
+			<if test="stepBean != null">and step_bean=#{stepBean}</if>
+			<if test="stepName != null">and step_name=#{stepName}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="consume != null">and consume=#{consume}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+		order by id desc limit 1
+	</select>
+
+	<select id="queryByField"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo">
+		select id as id,task_id as taskId,task_time as taskTime,app_name as
+		appName,app_request_id as appRequestId,step_num as stepNum,step_bean
+		as stepBean,step_name as stepName,status as status,consume as
+		consume,addtime as addtime from eng_step_info
+		<where>
+
+			<if test="taskId != null">and task_id=#{taskId}</if>
+			<if test="taskTime != null">and task_time=#{taskTime}</if>
+			<if test="appName != null">and app_name=#{appName}</if>
+			<if test="appRequestId != null">and app_request_id=#{appRequestId}</if>
+			<if test="stepNum != null">and step_num=#{stepNum}</if>
+			<if test="stepBean != null">and step_bean=#{stepBean}</if>
+			<if test="stepName != null">and step_name=#{stepName}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="consume != null">and consume=#{consume}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+	</select>
+
+
+	<select id="queryInField"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="java.util.Map">
+		select id as id,task_id as taskId,task_time as taskTime,app_name as
+		appName,app_request_id as appRequestId,step_num as stepNum,step_bean
+		as stepBean,step_name as stepName,status as status,consume as
+		consume,addtime as addtime from eng_step_info
+		<where>
+
+			<if test="taskId != null">and task_id=#{taskId}</if>
+			<if test="taskTime != null">and task_time=#{taskTime}</if>
+			<if test="appName != null">and app_name=#{appName}</if>
+			<if test="appRequestId != null">and app_request_id=#{appRequestId}</if>
+			<if test="stepNum != null">and step_num=#{stepNum}</if>
+			<if test="stepBean != null">and step_bean=#{stepBean}</if>
+			<if test="stepName != null">and step_name=#{stepName}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="consume != null">and consume=#{consume}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+
+			<if test="taskIdList != null">
+				and task_id in
+				<foreach collection="taskIdList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="taskTimeList != null">
+				and task_time in
+				<foreach collection="taskTimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="appNameList != null">
+				and app_name in
+				<foreach collection="appNameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="appRequestIdList != null">
+				and app_request_id in
+				<foreach collection="appRequestIdList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="stepNumList != null">
+				and step_num in
+				<foreach collection="stepNumList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="stepBeanList != null">
+				and step_bean in
+				<foreach collection="stepBeanList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="stepNameList != null">
+				and step_name in
+				<foreach collection="stepNameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="statusList != null">
+				and status in
+				<foreach collection="statusList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="consumeList != null">
+				and consume in
+				<foreach collection="consumeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="addtimeList != null">
+				and addtime in
+				<foreach collection="addtimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="queryByTaskId"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="java.lang.Long">
+		select id as id,task_id as taskId,task_time as
+		taskTime,app_name as appName,app_request_id as appRequestId,step_num
+		as stepNum,step_bean as stepBean,step_name as stepName,status as
+		status,consume as consume,addtime as addtime from eng_step_info
+		where task_id = #{taskId}
+	</select>
+
+	<select id="queryCountByTaskId" resultType="int" parameterType="java.lang.Long">
+		select count(1) from eng_step_info
+		where task_id = #{taskId}
+	</select>
+
+	<select id="queryLastOneByTaskId"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="java.lang.Long">
+		select id as id,task_id as taskId,task_time as
+		taskTime,app_name as appName,app_request_id as appRequestId,step_num
+		as stepNum,step_bean as stepBean,step_name as stepName,status as
+		status,consume as consume,addtime as addtime from eng_step_info
+		where task_id = #{taskId} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeTaskId"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="java.util.List">
+		select id as id,task_id as taskId,task_time as taskTime,app_name as
+		appName,app_request_id as appRequestId,step_num as stepNum,step_bean
+		as stepBean,step_name as stepName,status as status,consume as
+		consume,addtime as addtime from eng_step_info
+		where task_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeTaskId" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_step_info
+		where task_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+	<select id="queryByAppRequestId"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="java.lang.String">
+		select id as id,task_id as taskId,task_time as
+		taskTime,app_name as appName,app_request_id as appRequestId,step_num
+		as stepNum,step_bean as stepBean,step_name as stepName,status as
+		status,consume as consume,addtime as addtime from eng_step_info
+		where app_request_id = #{appRequestId}
+	</select>
+
+	<select id="queryCountByAppRequestId" resultType="int"
+		parameterType="java.lang.String">
+		select count(1) from eng_step_info
+		where app_request_id = #{appRequestId}
+	</select>
+
+	<select id="queryLastOneByAppRequestId"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="java.lang.String">
+		select id as id,task_id as taskId,task_time as
+		taskTime,app_name as appName,app_request_id as appRequestId,step_num
+		as stepNum,step_bean as stepBean,step_name as stepName,status as
+		status,consume as consume,addtime as addtime from eng_step_info
+		where app_request_id = #{appRequestId} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeAppRequestId"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="java.util.List">
+		select id as id,task_id as taskId,task_time as taskTime,app_name as
+		appName,app_request_id as appRequestId,step_num as stepNum,step_bean
+		as stepBean,step_name as stepName,status as status,consume as
+		consume,addtime as addtime from eng_step_info
+		where app_request_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeAppRequestId" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_step_info
+		where app_request_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<!-- ******************************************************************************************** -->
+
+	<select id="queryLastFailTaskSteps" resultType="com.mobanker.engine.framkwork.data.entity.EngineStepInfo"
+		parameterType="Long">
+		select id,task_id taskId,task_time taskTime,addtime,
+		step_num stepNum,step_bean stepBean,step_name stepName,status
+		from eng_step_info
+		where task_id = #{taskId} and status != '1'
+		and task_time = (select max(task_time) from eng_step_info where
+		task_id = #{taskId})
+		order by id
+	</select>
+
+</mapper>

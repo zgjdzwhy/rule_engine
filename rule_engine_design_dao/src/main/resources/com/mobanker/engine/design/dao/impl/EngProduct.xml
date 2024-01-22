@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mobanker.engine.design.dao.EngProductDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngProduct" id="EngProduct" />
+
+    <insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngProduct">
+		INSERT INTO eng_product
+				(product_type,name,group_id,creator_user,addtime)
+			VALUES 
+				(#{productType},#{name},#{groupId},#{creatorUser},#{addtime})	
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_product
+		(product_type,name,group_id,creator_user,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+			(#{item.productType},#{item.name},#{groupId},#{item.creatorUser},#{item.addtime})
+		</foreach>  
+	</insert>
+	
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngProduct">
+		update eng_product 
+		<set>
+			product_type=#{productType},
+name=#{name},
+group_id=#{groupId},
+creator_user=#{creatorUser},
+addtime=#{addtime},
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngProduct">
+		update eng_product 
+		<set>
+			<if test="productType != null">product_type=#{productType},</if>
+<if test="name != null">name=#{name},</if>
+<if test="groupId != null">group_id=#{groupId},</if>
+<if test="creatorUser != null">creator_user=#{creatorUser},</if>
+<if test="addtime != null">addtime=#{addtime},</if>
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_product 
+		<set>
+			<if test="des.productType != null">product_type=#{des.productType},</if>
+<if test="des.name != null">name=#{des.name},</if>
+<if test="des.groupId != null">group_id=#{des.groupId},</if>
+<if test="des.creatorUser != null">creator_user=#{des.creatorUser},</if>
+<if test="des.addtime != null">addtime=#{des.addtime},</if>
+
+		</set>
+			<where> 
+				<if test="src.productType==null and src.name==null and src.groupId==null and src.creatorUser==null and src.addtime==null ">and 1!=1</if>
+				
+<if test="src.productType != null">and product_type=#{src.productType}</if>
+<if test="src.name != null">and name=#{src.name}</if>
+<if test="src.groupId != null">and group_id=#{src.groupId}</if>
+<if test="src.creatorUser != null">and creator_user=#{src.creatorUser}</if>
+<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+			</where>  
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngProduct">
+		delete from eng_product 
+			where id = #{id}
+	</delete>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_product 
+			where id = #{id}
+	</delete>
+	
+	
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngProduct" parameterType="Long">
+		select id as id,product_type as productType,name as name,group_id as groupId,creator_user as creatorUser,addtime as addtime from eng_product 
+			where id = #{id}
+	</select>
+	
+	
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngProduct" parameterType="com.mobanker.engine.design.pojo.EngProduct">
+		select id as id,product_type as productType,name as name,group_id as groupId,creator_user as creatorUser,addtime as addtime from eng_product 
+			<where> 
+				
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="name != null">and name=#{name}</if>
+<if test="groupId != null">and group_id=#{groupId}</if>
+<if test="creatorUser != null">and creator_user=#{creatorUser}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+				order by id desc limit 1
+	</select>
+	
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngProduct" parameterType="com.mobanker.engine.design.pojo.EngProduct">
+		select id as id,product_type as productType,name as name,group_id as groupId,creator_user as creatorUser,addtime as addtime from eng_product 
+			<where> 
+				
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="name != null">and name=#{name}</if>
+<if test="groupId != null">and group_id=#{groupId}</if>
+<if test="creatorUser != null">and creator_user=#{creatorUser}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+	</select>
+	
+	
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngProduct" parameterType="java.util.Map">
+		select id as id,product_type as productType,name as name,group_id as groupId,creator_user as creatorUser,addtime as addtime from eng_product
+		<where>  
+			
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="name != null">and name=#{name}</if>
+<if test="groupId != null">and group_id=#{groupId}</if>
+<if test="creatorUser != null">and creator_user=#{creatorUser}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			
+<if test="productTypeList != null">and product_type in <foreach collection="productTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="nameList != null">and name in <foreach collection="nameList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="groupIdList != null">and group_id in <foreach collection="groupIdList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="creatorUserList != null">and creator_user in <foreach collection="creatorUserList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="addtimeList != null">and addtime in <foreach collection="addtimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		</where>  
+	</select>	
+	
+	
+	
+	<select id="queryByProductType" resultType="com.mobanker.engine.design.pojo.EngProduct" parameterType="java.lang.String">
+		select id as id,product_type as productType,name as name,group_id as groupId,creator_user as creatorUser,addtime as addtime from eng_product 
+			where product_type = #{productType}
+	</select>
+	
+	<select id="queryCountByProductType" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_product 
+			where product_type = #{productType}
+	</select>
+
+	<select id="queryLastOneByProductType" resultType="com.mobanker.engine.design.pojo.EngProduct" parameterType="java.lang.String">
+		select id as id,product_type as productType,name as name,group_id as groupId,creator_user as creatorUser,addtime as addtime from eng_product 
+			where product_type = #{productType} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeProductType" resultType="com.mobanker.engine.design.pojo.EngProduct" parameterType="java.util.List">
+		select id as id,product_type as productType,name as name,group_id as groupId,creator_user as creatorUser,addtime as addtime from eng_product 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeProductType" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_product 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+
+</mapper>

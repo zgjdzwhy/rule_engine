@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mobanker.engine.design.dao.EngGroupDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngGroup" id="EngGroup" />
+
+    <insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngGroup">
+		INSERT INTO eng_group
+				(group_type,group_name,creator_user,addtime)
+			VALUES 
+				(#{groupType},#{groupName},#{creatorUser},#{addtime})	
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_group
+		(group_type,group_name,creator_user,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+			(#{item.groupType},#{item.groupName},#{item.creatorUser},#{item.addtime})
+		</foreach>  
+	</insert>
+	
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngGroup">
+		update eng_group 
+		<set>
+			group_type=#{groupType},
+			group_name=#{groupName},
+			creator_user=#{creatorUser},
+			addtime=#{addtime},
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngGroup">
+		update eng_group 
+		<set>
+			<if test="groupType != null">group_type=#{groupType},</if>
+			<if test="groupName != null">group_name=#{groupName},</if>
+			<if test="creatorUser != null">creator_user=#{creatorUser},</if>
+			<if test="addtime != null">addtime=#{addtime},</if>
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngGroup">
+		delete from eng_group 
+			where id = #{id}
+	</delete>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_group 
+			where id = #{id}
+	</delete>
+	
+	
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngGroup" parameterType="Long">
+		select id as id,group_type as groupType,group_name as groupName,creator_user as creatorUser,addtime as addtime from eng_group 
+			where id = #{id}
+	</select>
+	
+	
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngGroup" parameterType="com.mobanker.engine.design.pojo.EngGroup">
+		select id as id,group_type as groupType,group_name as groupName,creator_user as creatorUser,addtime as addtime from eng_group 
+			<where> 
+				
+			<if test="groupType != null">and group_type=#{groupType}</if>
+			<if test="groupName != null">and group_name=#{groupName}</if>
+			<if test="creatorUser != null">and creator_user=#{creatorUser}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+				order by id desc limit 1
+	</select>
+	
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngGroup" parameterType="com.mobanker.engine.design.pojo.EngGroup">
+		select id as id,group_type as groupType,group_name as groupName,creator_user as creatorUser,addtime as addtime from eng_group 
+			<where> 
+				
+			<if test="groupType != null">and group_type=#{groupType}</if>
+			<if test="groupName != null">and group_name=#{groupName}</if>
+			<if test="creatorUser != null">and creator_user=#{creatorUser}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+	</select>
+	
+	
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngGroup" parameterType="java.util.Map">
+		select id as id,group_type as groupType,group_name as groupName,creator_user as creatorUser,addtime as addtime from eng_group
+		<where>  
+			
+		<if test="groupType != null">and group_type=#{groupType}</if>
+		<if test="groupName != null">and group_name=#{groupName}</if>
+		<if test="creatorUser != null">and creator_user=#{creatorUser}</if>
+		<if test="addtime != null">and addtime=#{addtime}</if>
+					
+		<if test="groupTypeList != null">and group_type in <foreach collection="groupTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		<if test="groupNameList != null">and group_name in <foreach collection="groupNameList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		<if test="creatorUserList != null">and creator_user in <foreach collection="creatorUserList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		<if test="addtimeList != null">and addtime in <foreach collection="addtimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		</where>  
+	</select>	
+	
+	
+	
+	<select id="queryByGroupType" resultType="com.mobanker.engine.design.pojo.EngGroup" parameterType="java.lang.String">
+		select id as id,group_type as groupType,group_name as groupName,creator_user as creatorUser,addtime as addtime from eng_group 
+			where group_type = #{groupType}
+	</select>
+	
+	<select id="queryCountByGroupType" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_group 
+			where group_type = #{groupType}
+	</select>
+
+	<select id="queryLastOneByGroupType" resultType="com.mobanker.engine.design.pojo.EngGroup" parameterType="java.lang.String">
+		select id as id,group_type as groupType,group_name as groupName,creator_user as creatorUser,addtime as addtime from eng_group 
+			where group_type = #{groupType} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeGroupType" resultType="com.mobanker.engine.design.pojo.EngGroup" parameterType="java.util.List">
+		select id as id,group_type as groupType,group_name as groupName,creator_user as creatorUser,addtime as addtime from eng_group 
+			where group_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeGroupType" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_group 
+			where group_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+
+</mapper>

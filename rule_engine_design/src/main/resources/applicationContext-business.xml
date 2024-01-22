@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <context:annotation-config />
+	<context:component-scan base-package="com.mobanker.engine.design.busi" />
+	<context:component-scan base-package="com.mobanker.engine.design.rule.encrypt" />
+	
+	
+	<!-- <bean class="com.mobanker.framework.web.v1_0_0.ServerController"/>	 -->
+	
+	<bean id="engineRuleModelHotDeployService" class="com.mobanker.engine.design.hotdeploy.EngineRuleModelHotDeployServiceImpl">
+		<property name="zkAddress" value="${dubbo.zk.url}"/>
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>		
+	</bean> 	
+	
+	<!-- 有了快照测试不需要fat测试了 -->
+<!-- 	<bean id="testRuleModelHotDeployService" class="com.mobanker.engine.design.hotdeploy.EngineRuleModelHotDeployServiceImpl">
+		<property name="zkAddress" value="${fat.zk.url}"/>	
+		<property name="zkTimeout" value="${fat.zk.timeout}"/>		
+	</bean>  -->	
+	
+	<bean id="engineTestRuleHotDeployService" class="com.mobanker.engine.design.hotdeploy.EngineTestRuleHotDeployServiceImpl">
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>	
+		<property name="isProductEnviro" value="${ruleconfig.isProductEnviro}"/>		
+	</bean> 	
+	
+	
+	<bean id="esRuleModelDao" class="com.mobanker.engine.design.mongo.EsRuleModelDaoImpl">
+		<property name="engineRuleEngcrypt" ref="${ruleconfig.engcrypt.type}"/>				
+	</bean> 	
+	
+	<bean id="mysqlRuleModelDao" class="com.mobanker.engine.design.mongo.MysqlRuleModelDaoImpl">
+		<property name="engineRuleEngcrypt" ref="${ruleconfig.engcrypt.type}"/>				
+	</bean> 	
+	
+	
+<!-- 	<bean id="engineSerFileHotDeployService" class="com.mobanker.engine.design.hotdeploy.EngineSerHotDeployServiceImpl">
+		<property name="zkAddress" value="${dubbo.zk.url}"/>
+		<property name="zkTimeout" value="${dubbo.zk.timeout}"/>		
+	</bean> 	
+	
+	<bean id="testSerFileHotDeployService" class="com.mobanker.engine.design.hotdeploy.EngineSerHotDeployServiceImpl">
+		<property name="zkAddress" value="${fat.zk.url}"/>	
+		<property name="zkTimeout" value="${fat.zk.timeout}"/>		
+	</bean>  -->		
+	
+</beans>

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mobanker.engine.design.dao.EngDefineFieldDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngDefineField" id="EngDefineField" />
+
+    <insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngDefineField">
+		INSERT INTO eng_define_field
+				(field_type,field_key,field_name,is_arr,field_ref_value,field_use,username,product_type,memo,addtime)
+			VALUES 
+				(#{fieldType},#{fieldKey},#{fieldName},#{isArr},#{fieldRefValue},#{fieldUse},#{username},#{productType},#{memo},#{addtime})	
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_define_field
+		(field_type,field_key,field_name,is_arr,field_ref_value,field_use,username,product_type,memo,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+			(#{item.fieldType},#{item.fieldKey},#{item.fieldName},#{item.isArr},#{item.fieldRefValue},#{item.fieldUse},#{item.username},#{item.productType},#{item.memo},#{item.addtime})
+		</foreach>  
+	</insert>
+	
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngDefineField">
+		update eng_define_field 
+		<set>
+			field_type=#{fieldType},
+field_key=#{fieldKey},
+field_name=#{fieldName},
+is_arr=#{isArr},
+field_ref_value=#{fieldRefValue},
+field_use=#{fieldUse},
+username=#{username},
+product_type=#{productType},
+memo=#{memo},
+addtime=#{addtime},
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngDefineField">
+		update eng_define_field 
+		<set>
+			<if test="fieldType != null">field_type=#{fieldType},</if>
+<if test="fieldKey != null">field_key=#{fieldKey},</if>
+<if test="fieldName != null">field_name=#{fieldName},</if>
+<if test="isArr != null">is_arr=#{isArr},</if>
+<if test="fieldRefValue != null">field_ref_value=#{fieldRefValue},</if>
+<if test="fieldUse != null">field_use=#{fieldUse},</if>
+<if test="username != null">username=#{username},</if>
+<if test="productType != null">product_type=#{productType},</if>
+<if test="memo != null">memo=#{memo},</if>
+<if test="addtime != null">addtime=#{addtime},</if>
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_define_field 
+		<set>
+			<if test="des.fieldType != null">field_type=#{des.fieldType},</if>
+<if test="des.fieldKey != null">field_key=#{des.fieldKey},</if>
+<if test="des.fieldName != null">field_name=#{des.fieldName},</if>
+<if test="des.isArr != null">is_arr=#{des.isArr},</if>
+<if test="des.fieldRefValue != null">field_ref_value=#{des.fieldRefValue},</if>
+<if test="des.fieldUse != null">field_use=#{des.fieldUse},</if>
+<if test="des.username != null">username=#{des.username},</if>
+<if test="des.productType != null">product_type=#{des.productType},</if>
+<if test="des.memo != null">memo=#{des.memo},</if>
+<if test="des.addtime != null">addtime=#{des.addtime},</if>
+
+		</set>
+			<where> 
+				<if test="src.fieldType==null and src.fieldKey==null and src.fieldName==null and src.isArr==null and src.fieldRefValue==null and src.fieldUse==null and src.username==null and src.productType==null and src.memo==null and src.addtime==null ">and 1!=1</if>
+				
+<if test="src.fieldType != null">and field_type=#{src.fieldType}</if>
+<if test="src.fieldKey != null">and field_key=#{src.fieldKey}</if>
+<if test="src.fieldName != null">and field_name=#{src.fieldName}</if>
+<if test="src.isArr != null">and is_arr=#{src.isArr}</if>
+<if test="src.fieldRefValue != null">and field_ref_value=#{src.fieldRefValue}</if>
+<if test="src.fieldUse != null">and field_use=#{src.fieldUse}</if>
+<if test="src.username != null">and username=#{src.username}</if>
+<if test="src.productType != null">and product_type=#{src.productType}</if>
+<if test="src.memo != null">and memo=#{src.memo}</if>
+<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+			</where>  
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngDefineField">
+		delete from eng_define_field 
+			where id = #{id}
+	</delete>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_define_field 
+			where id = #{id}
+	</delete>
+	
+	
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="Long">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where id = #{id}
+	</select>
+	
+	
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="com.mobanker.engine.design.pojo.EngDefineField">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			<where> 
+				
+<if test="fieldType != null">and field_type=#{fieldType}</if>
+<if test="fieldKey != null">and field_key=#{fieldKey}</if>
+<if test="fieldName != null">and field_name=#{fieldName}</if>
+<if test="isArr != null">and is_arr=#{isArr}</if>
+<if test="fieldRefValue != null">and field_ref_value=#{fieldRefValue}</if>
+<if test="fieldUse != null">and field_use=#{fieldUse}</if>
+<if test="username != null">and username=#{username}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="memo != null">and memo=#{memo}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+				order by id desc limit 1
+	</select>
+	
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="com.mobanker.engine.design.pojo.EngDefineField">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			<where> 
+				
+<if test="fieldType != null">and field_type=#{fieldType}</if>
+<if test="fieldKey != null">and field_key=#{fieldKey}</if>
+<if test="fieldName != null">and field_name=#{fieldName}</if>
+<if test="isArr != null">and is_arr=#{isArr}</if>
+<if test="fieldRefValue != null">and field_ref_value=#{fieldRefValue}</if>
+<if test="fieldUse != null">and field_use=#{fieldUse}</if>
+<if test="username != null">and username=#{username}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="memo != null">and memo=#{memo}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+	</select>
+	
+	
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.util.Map">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field
+		<where>  
+			
+<if test="fieldType != null">and field_type=#{fieldType}</if>
+<if test="fieldKey != null">and field_key=#{fieldKey}</if>
+<if test="fieldName != null">and field_name=#{fieldName}</if>
+<if test="isArr != null">and is_arr=#{isArr}</if>
+<if test="fieldRefValue != null">and field_ref_value=#{fieldRefValue}</if>
+<if test="fieldUse != null">and field_use=#{fieldUse}</if>
+<if test="username != null">and username=#{username}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="memo != null">and memo=#{memo}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			
+<if test="fieldTypeList != null">and field_type in <foreach collection="fieldTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="fieldKeyList != null">and field_key in <foreach collection="fieldKeyList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="fieldNameList != null">and field_name in <foreach collection="fieldNameList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="isArrList != null">and is_arr in <foreach collection="isArrList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="fieldRefValueList != null">and field_ref_value in <foreach collection="fieldRefValueList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="fieldUseList != null">and field_use in <foreach collection="fieldUseList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="usernameList != null">and username in <foreach collection="usernameList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="productTypeList != null">and product_type in <foreach collection="productTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="memoList != null">and memo in <foreach collection="memoList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="addtimeList != null">and addtime in <foreach collection="addtimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		</where>  
+	</select>	
+	
+	
+	
+	<select id="queryByFieldKey" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_key = #{fieldKey}
+	</select>
+	
+	<select id="queryCountByFieldKey" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_define_field 
+			where field_key = #{fieldKey}
+	</select>
+
+	<select id="queryLastOneByFieldKey" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_key = #{fieldKey} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeFieldKey" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.util.List">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_key in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeFieldKey" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_define_field 
+			where field_key in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<select id="queryByFieldName" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_name = #{fieldName}
+	</select>
+	
+	<select id="queryCountByFieldName" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_define_field 
+			where field_name = #{fieldName}
+	</select>
+
+	<select id="queryLastOneByFieldName" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_name = #{fieldName} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeFieldName" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.util.List">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_name in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeFieldName" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_define_field 
+			where field_name in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<select id="queryByFieldUse" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_use = #{fieldUse}
+	</select>
+	
+	<select id="queryCountByFieldUse" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_define_field 
+			where field_use = #{fieldUse}
+	</select>
+
+	<select id="queryLastOneByFieldUse" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_use = #{fieldUse} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeFieldUse" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.util.List">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_use in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeFieldUse" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_define_field 
+			where field_use in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<select id="queryByUsername" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where username = #{username}
+	</select>
+	
+	<select id="queryCountByUsername" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_define_field 
+			where username = #{username}
+	</select>
+
+	<select id="queryLastOneByUsername" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where username = #{username} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeUsername" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.util.List">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where username in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeUsername" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_define_field 
+			where username in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<select id="queryByProductType" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where product_type = #{productType}
+	</select>
+	
+	<select id="queryCountByProductType" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_define_field 
+			where product_type = #{productType}
+	</select>
+
+	<select id="queryLastOneByProductType" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.lang.String">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where product_type = #{productType} order by id desc limit 1
+	</select>
+		
+	<select id="queryBySomeProductType" resultType="com.mobanker.engine.design.pojo.EngDefineField" parameterType="java.util.List">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeProductType" resultType="int" parameterType="java.util.List">
+		select count(1) from eng_define_field 
+			where product_type in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+	</select>
+	
+	<!-- ************************************************** -->
+	
+	<select id="queryLastOneByFieldKeyAndProductType" resultType="com.mobanker.engine.design.pojo.EngDefineField">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_key = #{0} and product_type = #{1} order by id desc limit 1
+	</select>
+
+	<select id="queryLastOneByFieldNameAndProductType" resultType="com.mobanker.engine.design.pojo.EngDefineField">
+		select id as id,field_type as fieldType,field_key as fieldKey,field_name as fieldName,is_arr as isArr,field_ref_value as fieldRefValue,field_use as fieldUse,username as username,product_type as productType,memo as memo,addtime as addtime from eng_define_field 
+			where field_name = #{0} and product_type = #{1} order by id desc limit 1
+	</select>
+	
+	<delete id="deleteByProductType" parameterType="String">
+		delete from eng_define_field
+			where product_type = #{productType}
+	</delete>	
+	
+</mapper>

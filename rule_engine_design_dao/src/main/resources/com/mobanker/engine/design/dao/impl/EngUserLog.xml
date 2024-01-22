@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.mobanker.engine.design.dao.EngUserLogDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngUserLog" id="EngUserLog" />
+
+    <insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngUserLog">
+		INSERT INTO eng_user_log
+				(username,product_type,operate_type,status,addtime)
+			VALUES 
+				(#{username},#{productType},#{operateType},#{status},#{addtime})	
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_user_log
+		(username,product_type,operate_type,status,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >  
+			(#{item.username},#{item.productType},#{item.operateType},#{item.status},#{item.addtime})
+		</foreach>  
+	</insert>
+	
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngUserLog">
+		update eng_user_log 
+		<set>
+			username=#{username},
+product_type=#{productType},
+operate_type=#{operateType},
+status=#{status},
+addtime=#{addtime},
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngUserLog">
+		update eng_user_log 
+		<set>
+			<if test="username != null">username=#{username},</if>
+<if test="productType != null">product_type=#{productType},</if>
+<if test="operateType != null">operate_type=#{operateType},</if>
+<if test="status != null">status=#{status},</if>
+<if test="addtime != null">addtime=#{addtime},</if>
+
+		</set>
+			where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_user_log 
+		<set>
+			<if test="des.username != null">username=#{des.username},</if>
+<if test="des.productType != null">product_type=#{des.productType},</if>
+<if test="des.operateType != null">operate_type=#{des.operateType},</if>
+<if test="des.status != null">status=#{des.status},</if>
+<if test="des.addtime != null">addtime=#{des.addtime},</if>
+
+		</set>
+			<where> 
+				<if test="src.username==null and src.productType==null and src.operateType==null and src.status==null and src.addtime==null ">and 1!=1</if>
+				
+<if test="src.username != null">and username=#{src.username}</if>
+<if test="src.productType != null">and product_type=#{src.productType}</if>
+<if test="src.operateType != null">and operate_type=#{src.operateType}</if>
+<if test="src.status != null">and status=#{src.status}</if>
+<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+			</where>  
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngUserLog">
+		delete from eng_user_log 
+			where id = #{id}
+	</delete>
+	
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_user_log 
+			where id = #{id}
+	</delete>
+	
+	
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngUserLog" parameterType="Long">
+		select id as id,username as username,product_type as productType,operate_type as operateType,status as status,addtime as addtime from eng_user_log 
+			where id = #{id}
+	</select>
+	
+	
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngUserLog" parameterType="com.mobanker.engine.design.pojo.EngUserLog">
+		select id as id,username as username,product_type as productType,operate_type as operateType,status as status,addtime as addtime from eng_user_log 
+			<where> 
+				
+<if test="username != null">and username=#{username}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="operateType != null">and operate_type=#{operateType}</if>
+<if test="status != null">and status=#{status}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+				order by id desc limit 1
+	</select>
+	
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngUserLog" parameterType="com.mobanker.engine.design.pojo.EngUserLog">
+		select id as id,username as username,product_type as productType,operate_type as operateType,status as status,addtime as addtime from eng_user_log 
+			<where> 
+				
+<if test="username != null">and username=#{username}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="operateType != null">and operate_type=#{operateType}</if>
+<if test="status != null">and status=#{status}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			</where>  
+	</select>
+	
+	
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngUserLog" parameterType="java.util.Map">
+		select id as id,username as username,product_type as productType,operate_type as operateType,status as status,addtime as addtime from eng_user_log
+		<where>  
+			
+<if test="username != null">and username=#{username}</if>
+<if test="productType != null">and product_type=#{productType}</if>
+<if test="operateType != null">and operate_type=#{operateType}</if>
+<if test="status != null">and status=#{status}</if>
+<if test="addtime != null">and addtime=#{addtime}</if>
+			
+<if test="usernameList != null">and username in <foreach collection="usernameList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="productTypeList != null">and product_type in <foreach collection="productTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="operateTypeList != null">and operate_type in <foreach collection="operateTypeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="statusList != null">and status in <foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+<if test="addtimeList != null">and addtime in <foreach collection="addtimeList" index="index" item="item" open="(" separator="," close=")">#{item}</foreach></if>
+		</where>  
+	</select>	
+	
+	
+	
+
+</mapper>

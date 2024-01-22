@@ -1,0 +1,6 @@
+function sys_setContain(arr,one){
+    for(var x in arr){
+        if(arr[x] == one) return true;
+    }
+    return false;
+}

@@ -1,0 +1,14 @@
+function sys_setContainKeywords(allarr,arrKeyWord){
+	if(allarr.length == 0) return false;
+    if(arrKeyWord.length == 0) return false;
+    for(var x in allarr){
+        var one = allarr[x];
+        for(var y in arrKeyWord){
+            var keyWord = arrKeyWord[y];
+            if(sys_strContain(one,keyWord)){
+                return true;               
+            }            
+        }
+    }
+    return false;
+}

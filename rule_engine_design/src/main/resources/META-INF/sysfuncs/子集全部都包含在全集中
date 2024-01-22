@@ -1,0 +1,16 @@
+function sys_setContainWholeAnother(allset,subset){
+    if(allset.length == 0) return false;
+    if(subset.length == 0) return false;
+    for(var x in subset){
+        var isOneInAllSet = false;
+        var oneSub = subset[x];
+        for(var y in allset){
+            if(oneSub  == allset[y]){
+                isOneInAllSet  = true;
+                continue;
+            }
+        }
+        if(isOneInAllSet == false) return false;
+    }
+    return true;
+}

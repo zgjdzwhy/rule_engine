@@ -1,0 +1,8 @@
+判断一个集合中是否全部包含于另一个集合中，
+若包含返回true。
+不包含返回false。
+举例：
+var allset=["a","b","c","d"];
+sys_setContainWholeAnother(allset,["a","b"]);    ----- true ["a","b"] 包含于于集合allset中  
+sys_setContainWholeAnother(allset,["a","b","e"]); ----- false "e" 不包含于于集合allset中     
+sys_setContainWholeAnother(allset,["a",""]);    -----  false ""不包含于于集合allset中

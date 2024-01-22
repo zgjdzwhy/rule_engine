@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<stage id="dqdZr1Stage" type="EngineStandardStage" right="未定" name="准入1stage" isRoot="true"
+		updatetime="20160801125321">
+		<stepList>
+			<step id="dqdZr1ScriptStep"/>
+			<step id="dqdZr2ScriptStep"/>
+		</stepList>	
+	</stage>
+
+
+	<step id="dqdZr1ScriptStep" type="EngineScriptStep" right="未定" name="脚本处理1step" 
+		updatetime="20160801125321">
+		<script>
+  			<![CDATA[
+  				test1 			
+  			]]>
+		</script>
+	</step>
+
+	<step id="dqdZr2ScriptStep" type="EngineScriptStep" right="未定" name="脚本处理2step"
+		updatetime="20160801125321">
+		<script>
+  			<![CDATA[
+  				test2 			
+  			]]>
+		</script>
+	</step>
+</root>

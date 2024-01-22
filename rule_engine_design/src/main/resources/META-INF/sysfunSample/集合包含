@@ -1,0 +1,9 @@
+判断一个字段是否包含于集合中，
+若包含返回true。
+不包含返回false。
+举例：
+var arr=["abc","efg"];
+sys_setContain(arr,"abc"); ----- ture "abc"在集合中
+sys_setContain(arr,"a");   ----- false "a"不等于"abc"
+sys_setContain(arr,"abcd");----- false "abcd"不等于"abc"
+sys_setContain(arr,"");    ----- false ""不等于"abc"

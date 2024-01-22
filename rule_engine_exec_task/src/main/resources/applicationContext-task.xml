@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://www.springframework.org/schema/context 
+						   http://www.springframework.org/schema/context/spring-context.xsd
+			               http://www.springframework.org/schema/mvc
+        				   http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+							http://www.springframework.org/schema/tx
+							http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+							http://www.springframework.org/schema/task 
+							http://www.springframework.org/schema/task/spring-task-4.0.xsd
+							http://www.springframework.org/schema/data/mongo
+        					http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd">
+
+	
+	<task:executor id="executor" pool-size="5" />  
+    <task:scheduler id="scheduler" pool-size="10" />  
+    <task:annotation-driven executor="executor" scheduler="scheduler" />
+  	<task:scheduled-tasks>          					
+		<!-- 每隔一小段时间将任务数据发送至mq-->    
+        <task:scheduled ref="engineTaskSendJob" method="sendTask" 
+        					cron="0/30 * * * * ?"/>    	
+        <!-- 每小时执行一次重置被中断的任务 -->					
+        <task:scheduled ref="engineTaskSendJob" method="resetInterruptTask" 
+        					cron="0 0 * * * ?"/>
+		<!-- 每小时第15分钟执行一次重置失败的任务 -->        					
+        <task:scheduled ref="engineTaskSendJob" method="resetFailTask" 
+        					cron="0 15 * * * ?"/>        										     
+        					  
+    </task:scheduled-tasks>    
+	
+	
+
+	
+</beans>

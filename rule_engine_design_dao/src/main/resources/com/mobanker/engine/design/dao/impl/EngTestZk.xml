@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobanker.engine.design.dao.EngTestZkDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngTestZk"
+		id="EngTestZk" />
+
+	<insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngTestZk">
+		INSERT INTO eng_test_zk
+		(zk_name,zk_url,memo,status,username,addtime)
+		VALUES
+		(#{zkName},#{zkUrl},#{memo},#{status},#{username},#{addtime})
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_test_zk
+		(zk_name,zk_url,memo,status,username,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.zkName},#{item.zkUrl},#{item.memo},#{item.status},#{item.username},#{item.addtime})
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngTestZk">
+		update eng_test_zk
+		<set>
+			zk_name=#{zkName}, zk_url=#{zkUrl}, memo=#{memo},
+			status=#{status}, username=#{username}, addtime=#{addtime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngTestZk">
+		update eng_test_zk
+		<set>
+			<if test="zkName != null">zk_name=#{zkName},</if>
+			<if test="zkUrl != null">zk_url=#{zkUrl},</if>
+			<if test="memo != null">memo=#{memo},</if>
+			<if test="status != null">status=#{status},</if>
+			<if test="username != null">username=#{username},</if>
+			<if test="addtime != null">addtime=#{addtime},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_test_zk
+		<set>
+			<if test="des.zkName != null">zk_name=#{des.zkName},</if>
+			<if test="des.zkUrl != null">zk_url=#{des.zkUrl},</if>
+			<if test="des.memo != null">memo=#{des.memo},</if>
+			<if test="des.status != null">status=#{des.status},</if>
+			<if test="des.username != null">username=#{des.username},</if>
+			<if test="des.addtime != null">addtime=#{des.addtime},</if>
+		</set>
+		<where>
+			<if
+				test="src.zkName==null and src.zkUrl==null and src.memo==null and src.status==null and src.username==null and src.addtime==null ">and 1!=1</if>
+
+			<if test="src.zkName != null">and zk_name=#{src.zkName}</if>
+			<if test="src.zkUrl != null">and zk_url=#{src.zkUrl}</if>
+			<if test="src.memo != null">and memo=#{src.memo}</if>
+			<if test="src.status != null">and status=#{src.status}</if>
+			<if test="src.username != null">and username=#{src.username}</if>
+			<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngTestZk">
+		delete from eng_test_zk
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_test_zk
+		where id = #{id}
+	</delete>
+
+
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngTestZk"
+		parameterType="Long">
+		select id as id,zk_name as zkName,zk_url as zkUrl,memo
+		as memo,status as status,username as username,addtime as addtime from
+		eng_test_zk
+		where id = #{id}
+	</select>
+
+
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngTestZk"
+		parameterType="com.mobanker.engine.design.pojo.EngTestZk">
+		select id as id,zk_name as zkName,zk_url as zkUrl,memo as memo,status
+		as status,username as username,addtime as addtime from eng_test_zk
+		<where>
+
+			<if test="zkName != null">and zk_name=#{zkName}</if>
+			<if test="zkUrl != null">and zk_url=#{zkUrl}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="username != null">and username=#{username}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+		order by id desc limit 1
+	</select>
+
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngTestZk"
+		parameterType="com.mobanker.engine.design.pojo.EngTestZk">
+		select id as id,zk_name as zkName,zk_url as zkUrl,memo as memo,status
+		as status,username as username,addtime as addtime from eng_test_zk
+		<where>
+
+			<if test="zkName != null">and zk_name=#{zkName}</if>
+			<if test="zkUrl != null">and zk_url=#{zkUrl}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="username != null">and username=#{username}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+	</select>
+
+
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngTestZk"
+		parameterType="java.util.Map">
+		select id as id,zk_name as zkName,zk_url as zkUrl,memo as memo,status
+		as status,username as username,addtime as addtime from eng_test_zk
+		<where>
+
+			<if test="zkName != null">and zk_name=#{zkName}</if>
+			<if test="zkUrl != null">and zk_url=#{zkUrl}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="username != null">and username=#{username}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+
+			<if test="zkNameList != null">
+				and zk_name in
+				<foreach collection="zkNameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="zkUrlList != null">
+				and zk_url in
+				<foreach collection="zkUrlList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="memoList != null">
+				and memo in
+				<foreach collection="memoList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="statusList != null">
+				and status in
+				<foreach collection="statusList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="usernameList != null">
+				and username in
+				<foreach collection="usernameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="addtimeList != null">
+				and addtime in
+				<foreach collection="addtimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		</where>
+	</select>
+
+
+</mapper>

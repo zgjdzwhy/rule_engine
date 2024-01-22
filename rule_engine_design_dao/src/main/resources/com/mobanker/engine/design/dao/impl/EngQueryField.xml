@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobanker.engine.design.dao.EngQueryFieldDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngQueryField"
+		id="EngQueryField" />
+
+	<insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngQueryField">
+		INSERT INTO eng_query_field
+		(query_id,field_type,field_key,field_name,field_ref_value,field_default_value,is_arr,product_type,memo)
+		VALUES
+		(#{queryId},#{fieldType},#{fieldKey},#{fieldName},#{fieldRefValue},#{fieldDefaultValue},#{isArr},#{productType},#{memo})
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_query_field
+		(query_id,field_type,field_key,field_name,field_ref_value,field_default_value,is_arr,product_type,memo)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.queryId},#{item.fieldType},#{item.fieldKey},#{item.fieldName},#{item.fieldRefValue},#{item.fieldDefaultValue},#{item.isArr},#{item.productType},#{item.memo})
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngQueryField">
+		update eng_query_field
+		<set>
+			query_id=#{queryId},
+			field_type=#{fieldType},
+			field_key=#{fieldKey},
+			field_name=#{fieldName},
+			field_ref_value=#{fieldRefValue},
+			field_default_value=#{fieldDefaultValue},
+			is_arr=#{isArr},
+			product_type=#{productType},
+			memo=#{memo},
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngQueryField">
+		update eng_query_field
+		<set>
+			<if test="queryId != null">query_id=#{queryId},</if>
+			<if test="fieldType != null">field_type=#{fieldType},</if>
+			<if test="fieldKey != null">field_key=#{fieldKey},</if>
+			<if test="fieldName != null">field_name=#{fieldName},</if>
+			<if test="fieldRefValue != null">field_ref_value=#{fieldRefValue},</if>
+			<if test="fieldDefaultValue != null">field_default_value=#{fieldDefaultValue},</if>
+			<if test="isArr != null">is_arr=#{isArr},</if>
+			<if test="productType != null">product_type=#{productType},</if>
+			<if test="memo != null">memo=#{memo},</if>
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_query_field
+		<set>
+			<if test="des.queryId != null">query_id=#{des.queryId},</if>
+			<if test="des.fieldType != null">field_type=#{des.fieldType},</if>
+			<if test="des.fieldKey != null">field_key=#{des.fieldKey},</if>
+			<if test="des.fieldName != null">field_name=#{des.fieldName},</if>
+			<if test="des.fieldRefValue != null">field_ref_value=#{des.fieldRefValue},</if>
+			<if test="des.fieldDefaultValue != null">field_default_value=#{des.fieldDefaultValue},</if>
+			<if test="des.isArr != null">is_arr=#{des.isArr},</if>
+			<if test="des.productType != null">product_type=#{des.productType},</if>
+			<if test="des.memo != null">memo=#{des.memo},</if>
+
+		</set>
+		<where>
+			<if
+				test="src.queryId==null and src.fieldType==null and src.fieldKey==null and src.fieldName==null and src.fieldRefValue==null and src.fieldDefaultValue==null and src.isArr==null and src.productType==null and src.memo==null ">and 1!=1</if>
+
+			<if test="src.queryId != null">and query_id=#{src.queryId}</if>
+			<if test="src.fieldType != null">and field_type=#{src.fieldType}</if>
+			<if test="src.fieldKey != null">and field_key=#{src.fieldKey}</if>
+			<if test="src.fieldName != null">and field_name=#{src.fieldName}</if>
+			<if test="src.fieldRefValue != null">and field_ref_value=#{src.fieldRefValue}</if>
+			<if test="src.fieldDefaultValue != null">and field_default_value=#{src.fieldDefaultValue}</if>
+			<if test="src.isArr != null">and is_arr=#{src.isArr}</if>
+			<if test="src.productType != null">and product_type=#{src.productType}</if>
+			<if test="src.memo != null">and memo=#{src.memo}</if>
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngQueryField">
+		delete from eng_query_field
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteById" parameterType="Long">
+		delete from
+		eng_query_field
+		where id = #{id}
+	</delete>
+
+
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="Long">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where id = #{id}
+	</select>
+
+
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="com.mobanker.engine.design.pojo.EngQueryField">
+		select id as id,query_id as queryId,field_type as fieldType,field_key
+		as fieldKey,field_name as fieldName,field_ref_value as
+		fieldRefValue,field_default_value as fieldDefaultValue,is_arr as
+		isArr,product_type as productType,memo as memo from eng_query_field
+		<where>
+
+			<if test="queryId != null">and query_id=#{queryId}</if>
+			<if test="fieldType != null">and field_type=#{fieldType}</if>
+			<if test="fieldKey != null">and field_key=#{fieldKey}</if>
+			<if test="fieldName != null">and field_name=#{fieldName}</if>
+			<if test="fieldRefValue != null">and field_ref_value=#{fieldRefValue}</if>
+			<if test="fieldDefaultValue != null">and field_default_value=#{fieldDefaultValue}</if>
+			<if test="isArr != null">and is_arr=#{isArr}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+		</where>
+		order by id desc limit 1
+	</select>
+
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="com.mobanker.engine.design.pojo.EngQueryField">
+		select id as id,query_id as queryId,field_type as fieldType,field_key
+		as fieldKey,field_name as fieldName,field_ref_value as
+		fieldRefValue,field_default_value as fieldDefaultValue,is_arr as
+		isArr,product_type as productType,memo as memo from eng_query_field
+		<where>
+
+			<if test="queryId != null">and query_id=#{queryId}</if>
+			<if test="fieldType != null">and field_type=#{fieldType}</if>
+			<if test="fieldKey != null">and field_key=#{fieldKey}</if>
+			<if test="fieldName != null">and field_name=#{fieldName}</if>
+			<if test="fieldRefValue != null">and field_ref_value=#{fieldRefValue}</if>
+			<if test="fieldDefaultValue != null">and field_default_value=#{fieldDefaultValue}</if>
+			<if test="isArr != null">and is_arr=#{isArr}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+		</where>
+	</select>
+
+
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.util.Map">
+		select id as id,query_id as queryId,field_type as fieldType,field_key
+		as fieldKey,field_name as fieldName,field_ref_value as
+		fieldRefValue,field_default_value as fieldDefaultValue,is_arr as
+		isArr,product_type as productType,memo as memo from eng_query_field
+		<where>
+
+			<if test="queryId != null">and query_id=#{queryId}</if>
+			<if test="fieldType != null">and field_type=#{fieldType}</if>
+			<if test="fieldKey != null">and field_key=#{fieldKey}</if>
+			<if test="fieldName != null">and field_name=#{fieldName}</if>
+			<if test="fieldRefValue != null">and field_ref_value=#{fieldRefValue}</if>
+			<if test="fieldDefaultValue != null">and field_default_value=#{fieldDefaultValue}</if>
+			<if test="isArr != null">and is_arr=#{isArr}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+
+			<if test="queryIdList != null">
+				and query_id in
+				<foreach collection="queryIdList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="fieldTypeList != null">
+				and field_type in
+				<foreach collection="fieldTypeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="fieldKeyList != null">
+				and field_key in
+				<foreach collection="fieldKeyList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="fieldNameList != null">
+				and field_name in
+				<foreach collection="fieldNameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="fieldRefValueList != null">
+				and field_ref_value in
+				<foreach collection="fieldRefValueList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="fieldDefaultValueList != null">
+				and field_default_value in
+				<foreach collection="fieldDefaultValueList" index="index"
+					item="item" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="isArrList != null">
+				and is_arr in
+				<foreach collection="isArrList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="productTypeList != null">
+				and product_type in
+				<foreach collection="productTypeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="memoList != null">
+				and memo in
+				<foreach collection="memoList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="queryByQueryId" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.lang.String">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where query_id = #{queryId}
+	</select>
+
+	<select id="queryCountByQueryId" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_query_field
+		where query_id = #{queryId}
+	</select>
+
+	<select id="queryLastOneByQueryId" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.lang.String">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where query_id = #{queryId} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeQueryId" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.util.List">
+		select id as id,query_id as queryId,field_type as fieldType,field_key
+		as fieldKey,field_name as fieldName,field_ref_value as
+		fieldRefValue,field_default_value as fieldDefaultValue,is_arr as
+		isArr,product_type as productType,memo as memo from eng_query_field
+		where query_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeQueryId" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_query_field
+		where query_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<select id="queryByFieldKey" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.lang.String">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where field_key = #{fieldKey}
+	</select>
+
+	<select id="queryCountByFieldKey" resultType="int"
+		parameterType="java.lang.String">
+		select count(1) from eng_query_field
+		where field_key = #{fieldKey}
+	</select>
+
+	<select id="queryLastOneByFieldKey" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.lang.String">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where field_key = #{fieldKey} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeFieldKey" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.util.List">
+		select id as id,query_id as queryId,field_type as fieldType,field_key
+		as fieldKey,field_name as fieldName,field_ref_value as
+		fieldRefValue,field_default_value as fieldDefaultValue,is_arr as
+		isArr,product_type as productType,memo as memo from eng_query_field
+		where field_key in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeFieldKey" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_query_field
+		where field_key in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<select id="queryByFieldName" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.lang.String">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where field_name = #{fieldName}
+	</select>
+
+	<select id="queryCountByFieldName" resultType="int"
+		parameterType="java.lang.String">
+		select count(1) from eng_query_field
+		where field_name = #{fieldName}
+	</select>
+
+	<select id="queryLastOneByFieldName" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.lang.String">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where field_name = #{fieldName} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeFieldName" resultType="com.mobanker.engine.design.pojo.EngQueryField"
+		parameterType="java.util.List">
+		select id as id,query_id as queryId,field_type as fieldType,field_key
+		as fieldKey,field_name as fieldName,field_ref_value as
+		fieldRefValue,field_default_value as fieldDefaultValue,is_arr as
+		isArr,product_type as productType,memo as memo from eng_query_field
+		where field_name in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeFieldName" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_query_field
+		where field_name in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<!-- ************************************************** -->
+
+	<select id="queryLastOneByFieldKeyAndProductType" resultType="com.mobanker.engine.design.pojo.EngQueryField">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where field_key = #{0} and product_type = #{1} order by id desc limit
+		1
+	</select>
+
+	<select id="queryLastOneByFieldNameAndProductType" resultType="com.mobanker.engine.design.pojo.EngQueryField">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where field_name = #{0} and product_type = #{1} order by id desc limit
+		1
+	</select>
+
+	<delete id="deleteByProductType" parameterType="String">
+		delete from
+		eng_query_field
+		where product_type = #{productType}
+	</delete>
+
+	<select id="queryByQueryIdAndProductType" resultType="com.mobanker.engine.design.pojo.EngQueryField">
+		select id as id,query_id as queryId,field_type as
+		fieldType,field_key as fieldKey,field_name as
+		fieldName,field_ref_value as fieldRefValue,field_default_value as
+		fieldDefaultValue,is_arr as isArr,product_type as productType,memo as
+		memo from eng_query_field
+		where query_id = #{0} and product_type = #{1} order by id desc limit
+		1
+	</select>
+	
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans       
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/rabbit
+       	http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd">
+
+
+	<context:annotation-config /> 
+	<context:component-scan base-package="com.mobanker.engine.exec.rabbitmq.assign"/>
+
+
+	<!-- 测试用Rabitmq -->
+	<!-- <import resource="classpath:springs/mobanker-fx-rabbitmq.xml" /> -->
+
+	<!-- <bean class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory"> 
+		<property name="username" value="${mq.username}" /> <property name="password" 
+		value="${mq.password}" /> <property name="host" value="${mq.host}" /> <property 
+		name="port" value="${mq.port}" /> <property name="publisherReturns" value="true" 
+		/> </bean> -->
+
+	<rabbit:connection-factory id="connectionFactory"
+		host="${mobanker.mq.host}" 
+		username="${mobanker.mq.username}" 
+		password="${mobanker.mq.password}" 
+		port="${mobanker.mq.port}" />
+
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<!-- queue 队列声明 -->
+	<rabbit:queue id="engine_task_assign" durable="true" auto-delete="false"
+		exclusive="false" name="engine_task_assign" />
+
+
+	<!-- exchange queue binging key 绑定 -->
+	<rabbit:direct-exchange name="engine_task_assign_exchange"
+		durable="true" auto-delete="false">
+		<rabbit:bindings>
+			<rabbit:binding queue="engine_task_assign" key="engine_task_assign" />
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+
+	<!-- 消费线程池 -->
+	<bean id="consumeExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+				<!-- 核心线程数  -->
+		<property name="corePoolSize" value="5" />
+				<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="5" />
+		<!-- 队列最大长度 >=mainExecutor.maxSize -->
+		<property name="queueCapacity" value="1000" />
+		<!-- 线程池维护线程所允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>
+
+      
+    <bean id="engineTaskAssignMessageListener"  
+        class="com.mobanker.engine.exec.rabbitmq.assign.EngineTaskAssignMessageListener" />  
+
+	<!-- queue litener 观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象 -->
+	<rabbit:listener-container
+		connection-factory="connectionFactory" acknowledge="auto">
+		<rabbit:listener queues="engine_task_assign" ref="engineTaskAssignMessageListener" />
+	</rabbit:listener-container>
+
+
+
+    <bean id="jsonMessageConverter"  class="com.mobanker.engine.exec.rabbitmq.assign.FastJsonMessageConverter"></bean>
+    <rabbit:template exchange="engine_task_assign_exchange" routing-key="engine_task_assign" id="rabbitTemplate" connection-factory="connectionFactory"  message-converter="jsonMessageConverter"/>
+
+</beans>

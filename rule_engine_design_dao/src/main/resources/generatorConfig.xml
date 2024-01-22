@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+
+<generatorConfiguration>
+    <!--数据库驱动jar -->
+    <classPathEntry location="D:\apache-maven-3.2.3\repository\mysql\mysql-connector-java\5.1.30\mysql-connector-java-5.1.30.jar"/>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!--去除注释 （true好像不起作用） -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+        <!--数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.1.214:3306/ucdai?useUnicode=true&amp;characterEncoding=UTF-8"
+                        userId="root" password="chengce214">
+        </jdbcConnection>
+        <!--默认false Java type resolver will always use java.math.BigDecimal if the database column is of type DECIMAL or NUMERIC. -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--生成实体类 指定包名 以及生成的地址 （可以自定义地址，但是路径不存在不会自动创建 使用Maven生成在target目录下，会自动创建） -->
+        <javaModelGenerator targetPackage="com.mobanker.democenter.mybatis.entity" targetProject="MAVEN">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!--生成SQLMAP文件 -->
+        <sqlMapGenerator targetPackage="com.mobanker.democenter.mybatis.mapper" targetProject="MAVEN">
+        <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+        <!--生成Dao文件 可以配置 type="XMLMAPPER"生成xml的dao实现 constant id="DB2Tables" 修改targetRuntime="MyBatis3" -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.mobanker.democenter.mybatis.dao" targetProject="MAVEN" >
+        <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <table tableName="yyd_communication_event" domainObjectName="CommunicationEvent" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableCountByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <ignoreColumn column="ID"/>
+        </table>
+        <table tableName="yyd_status" domainObjectName="Status" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableCountByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <ignoreColumn column="ID"/>
+        </table>
+
+
+    </context>
+</generatorConfiguration>

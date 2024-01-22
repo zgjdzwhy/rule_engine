@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobanker.engine.design.dao.EngFatTestDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngFatTest"
+		id="EngFatTest" />
+
+	<insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngFatTest">
+		INSERT INTO eng_fat_test
+		(url,product_type,memo)
+		VALUES
+		(#{url},#{productType},#{memo})
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_fat_test
+		(url,product_type,memo)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.url},#{item.productType},#{item.memo})
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngFatTest">
+		update eng_fat_test
+		<set>
+			url=#{url},
+			product_type=#{productType},
+			memo=#{memo},
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngFatTest">
+		update eng_fat_test
+		<set>
+			<if test="url != null">url=#{url},</if>
+			<if test="productType != null">product_type=#{productType},</if>
+			<if test="memo != null">memo=#{memo},</if>
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_fat_test
+		<set>
+			<if test="des.url != null">url=#{des.url},</if>
+			<if test="des.productType != null">product_type=#{des.productType},</if>
+			<if test="des.memo != null">memo=#{des.memo},</if>
+
+		</set>
+		<where>
+			<if test="src.url==null and src.productType==null and src.memo==null ">and 1!=1</if>
+
+			<if test="src.url != null">and url=#{src.url}</if>
+			<if test="src.productType != null">and product_type=#{src.productType}</if>
+			<if test="src.memo != null">and memo=#{src.memo}</if>
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngFatTest">
+		delete from eng_fat_test
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_fat_test
+		where id = #{id}
+	</delete>
+
+
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngFatTest"
+		parameterType="Long">
+		select id as id,url as url,product_type as
+		productType,memo as memo from eng_fat_test
+		where id = #{id}
+	</select>
+
+
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngFatTest"
+		parameterType="com.mobanker.engine.design.pojo.EngFatTest">
+		select id as id,url as url,product_type as productType,memo as memo
+		from eng_fat_test
+		<where>
+
+			<if test="url != null">and url=#{url}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+		</where>
+		order by id desc limit 1
+	</select>
+
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngFatTest"
+		parameterType="com.mobanker.engine.design.pojo.EngFatTest">
+		select id as id,url as url,product_type as productType,memo as memo
+		from eng_fat_test
+		<where>
+
+			<if test="url != null">and url=#{url}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+		</where>
+	</select>
+
+
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngFatTest"
+		parameterType="java.util.Map">
+		select id as id,url as url,product_type as productType,memo as memo
+		from eng_fat_test
+		<where>
+
+			<if test="url != null">and url=#{url}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+
+			<if test="urlList != null">
+				and url in
+				<foreach collection="urlList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="productTypeList != null">
+				and product_type in
+				<foreach collection="productTypeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="memoList != null">
+				and memo in
+				<foreach collection="memoList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="queryByProductType" resultType="com.mobanker.engine.design.pojo.EngFatTest"
+		parameterType="java.lang.String">
+		select id as id,url as url,product_type as
+		productType,memo as memo from eng_fat_test
+		where product_type = #{productType}
+	</select>
+
+	<select id="queryCountByProductType" resultType="int"
+		parameterType="java.lang.String">
+		select count(1) from eng_fat_test
+		where product_type = #{productType}
+	</select>
+
+	<select id="queryLastOneByProductType" resultType="com.mobanker.engine.design.pojo.EngFatTest"
+		parameterType="java.lang.String">
+		select id as id,url as url,product_type as
+		productType,memo as memo from eng_fat_test
+		where product_type = #{productType} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeProductType" resultType="com.mobanker.engine.design.pojo.EngFatTest"
+		parameterType="java.util.List">
+		select id as id,url as url,product_type as productType,memo as memo
+		from eng_fat_test
+		where product_type in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeProductType" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_fat_test
+		where product_type in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+
+
+</mapper>

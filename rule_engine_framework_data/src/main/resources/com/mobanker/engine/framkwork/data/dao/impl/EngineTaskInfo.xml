@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobanker.engine.framkwork.data.dao.EngineTaskInfoDao">
+
+	<parameterMap
+		type="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo" id="EngineTaskInfo" />
+
+	<insert id="insert"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo">
+		INSERT INTO eng_task_info
+		(product_type,app_name,app_request_id,app_call_back,app_params,begin_time,end_time,assign_step,status,fail_times,priority,channel,exec_time,source_detail,end_step,rule_version,memo,addtime)
+		VALUES
+		(#{productType},#{appName},#{appRequestId},#{appCallBack},#{appParams},#{beginTime},#{endTime},#{assignStep},#{status},#{failTimes},#{priority},#{channel},#{execTime},#{sourceDetail},#{endStep},#{ruleVersion},#{memo},#{addtime})
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_task_info
+		(product_type,app_name,app_request_id,app_call_back,app_params,begin_time,end_time,assign_step,status,fail_times,priority,channel,exec_time,source_detail,end_step,rule_version,memo,addtime)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.productType},#{item.appName},#{item.appRequestId},#{item.appCallBack},#{item.appParams},#{item.beginTime},#{item.endTime},#{item.assignStep},#{item.status},#{item.failTimes},#{item.priority},#{item.channel},#{item.execTime},#{item.sourceDetail},#{item.endStep},#{item.ruleVersion},#{item.memo},#{item.addtime})
+		</foreach>
+	</insert>
+
+	<update id="update"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo">
+		update eng_task_info
+		<set>
+			product_type=#{productType},
+			app_name=#{appName},
+			app_request_id=#{appRequestId},
+			app_call_back=#{appCallBack},
+			app_params=#{appParams},
+			begin_time=#{beginTime},
+			end_time=#{endTime},
+			assign_step=#{assignStep},
+			status=#{status},
+			fail_times=#{failTimes},
+			priority=#{priority},
+			channel=#{channel},
+			exec_time=#{execTime},
+			source_detail=#{sourceDetail},
+			end_step=#{endStep},
+			rule_version=#{ruleVersion},
+			memo=#{memo},
+			addtime=#{addtime},
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateField"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo">
+		update eng_task_info
+		<set>
+			<if test="productType != null">product_type=#{productType},</if>
+			<if test="appName != null">app_name=#{appName},</if>
+			<if test="appRequestId != null">app_request_id=#{appRequestId},</if>
+			<if test="appCallBack != null">app_call_back=#{appCallBack},</if>
+			<if test="appParams != null">app_params=#{appParams},</if>
+			<if test="beginTime != null">begin_time=#{beginTime},</if>
+			<if test="endTime != null">end_time=#{endTime},</if>
+			<if test="assignStep != null">assign_step=#{assignStep},</if>
+			<if test="status != null">status=#{status},</if>
+			<if test="failTimes != null">fail_times=#{failTimes},</if>
+			<if test="priority != null">priority=#{priority},</if>
+			<if test="channel != null">channel=#{channel},</if>
+			<if test="execTime != null">exec_time=#{execTime},</if>
+			<if test="sourceDetail != null">source_detail=#{sourceDetail},</if>
+			<if test="endStep != null">end_step=#{endStep},</if>
+			<if test="ruleVersion != null">rule_version=#{ruleVersion},</if>
+			<if test="memo != null">memo=#{memo},</if>
+			<if test="addtime != null">addtime=#{addtime},</if>
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_task_info
+		<set>
+			<if test="des.productType != null">product_type=#{des.productType},</if>
+			<if test="des.appName != null">app_name=#{des.appName},</if>
+			<if test="des.appRequestId != null">app_request_id=#{des.appRequestId},</if>
+			<if test="des.appCallBack != null">app_call_back=#{des.appCallBack},</if>
+			<if test="des.appParams != null">app_params=#{des.appParams},</if>
+			<if test="des.beginTime != null">begin_time=#{des.beginTime},</if>
+			<if test="des.endTime != null">end_time=#{des.endTime},</if>
+			<if test="des.assignStep != null">assign_step=#{des.assignStep},</if>
+			<if test="des.status != null">status=#{des.status},</if>
+			<if test="des.failTimes != null">fail_times=#{des.failTimes},</if>
+			<if test="des.priority != null">priority=#{des.priority},</if>
+			<if test="des.channel != null">channel=#{des.channel},</if>
+			<if test="des.execTime != null">exec_time=#{des.execTime},</if>
+			<if test="des.sourceDetail != null">source_detail=#{des.sourceDetail},</if>
+			<if test="des.endStep != null">end_step=#{des.endStep},</if>
+			<if test="des.ruleVersion != null">rule_version=#{des.ruleVersion},</if>
+			<if test="des.memo != null">memo=#{des.memo},</if>
+			<if test="des.addtime != null">addtime=#{des.addtime},</if>
+
+		</set>
+		<where>
+			<if
+				test="src.productType==null and src.appName==null and src.appRequestId==null and src.appCallBack==null and src.appParams==null and src.beginTime==null and src.endTime==null and src.assignStep==null and src.status==null and src.failTimes==null and src.priority==null and src.channel==null and src.execTime==null and src.sourceDetail==null and src.endStep==null and src.ruleVersion==null and src.memo==null and src.addtime==null ">and 1!=1</if>
+
+			<if test="src.productType != null">and product_type=#{src.productType}</if>
+			<if test="src.appName != null">and app_name=#{src.appName}</if>
+			<if test="src.appRequestId != null">and app_request_id=#{src.appRequestId}</if>
+			<if test="src.appCallBack != null">and app_call_back=#{src.appCallBack}</if>
+			<if test="src.appParams != null">and app_params=#{src.appParams}</if>
+			<if test="src.beginTime != null">and begin_time=#{src.beginTime}</if>
+			<if test="src.endTime != null">and end_time=#{src.endTime}</if>
+			<if test="src.assignStep != null">and assign_step=#{src.assignStep}</if>
+			<if test="src.status != null">and status=#{src.status}</if>
+			<if test="src.failTimes != null">and fail_times=#{src.failTimes}</if>
+			<if test="src.priority != null">and priority=#{src.priority}</if>
+			<if test="src.channel != null">and channel=#{src.channel}</if>
+			<if test="src.execTime != null">and exec_time=#{src.execTime}</if>
+			<if test="src.sourceDetail != null">and source_detail=#{src.sourceDetail}</if>
+			<if test="src.endStep != null">and end_step=#{src.endStep}</if>
+			<if test="src.ruleVersion != null">and rule_version=#{src.ruleVersion}</if>
+			<if test="src.memo != null">and memo=#{src.memo}</if>
+			<if test="src.addtime != null">and addtime=#{src.addtime}</if>
+		</where>
+	</update>
+
+	<delete id="delete"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo">
+		delete from eng_task_info
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteById" parameterType="Long">
+		delete from eng_task_info
+		where id = #{id}
+	</delete>
+
+
+	<select id="get"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="Long">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+		where id = #{id}
+	</select>
+
+
+	<select id="queryLastOneByField"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+		<where>
+
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="appName != null">and app_name=#{appName}</if>
+			<if test="appRequestId != null">and app_request_id=#{appRequestId}</if>
+			<if test="appCallBack != null">and app_call_back=#{appCallBack}</if>
+			<if test="appParams != null">and app_params=#{appParams}</if>
+			<if test="beginTime != null">and begin_time=#{beginTime}</if>
+			<if test="endTime != null">and end_time=#{endTime}</if>
+			<if test="assignStep != null">and assign_step=#{assignStep}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="failTimes != null">and fail_times=#{failTimes}</if>
+			<if test="priority != null">and priority=#{priority}</if>
+			<if test="channel != null">and channel=#{channel}</if>
+			<if test="execTime != null">and exec_time=#{execTime}</if>
+			<if test="sourceDetail != null">and source_detail=#{sourceDetail}</if>
+			<if test="endStep != null">and end_step=#{endStep}</if>
+			<if test="ruleVersion != null">and rule_version=#{ruleVersion}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+		order by id desc limit 1
+	</select>
+
+	<select id="queryByField"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+		<where>
+
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="appName != null">and app_name=#{appName}</if>
+			<if test="appRequestId != null">and app_request_id=#{appRequestId}</if>
+			<if test="appCallBack != null">and app_call_back=#{appCallBack}</if>
+			<if test="appParams != null">and app_params=#{appParams}</if>
+			<if test="beginTime != null">and begin_time=#{beginTime}</if>
+			<if test="endTime != null">and end_time=#{endTime}</if>
+			<if test="assignStep != null">and assign_step=#{assignStep}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="failTimes != null">and fail_times=#{failTimes}</if>
+			<if test="priority != null">and priority=#{priority}</if>
+			<if test="channel != null">and channel=#{channel}</if>
+			<if test="execTime != null">and exec_time=#{execTime}</if>
+			<if test="sourceDetail != null">and source_detail=#{sourceDetail}</if>
+			<if test="endStep != null">and end_step=#{endStep}</if>
+			<if test="ruleVersion != null">and rule_version=#{ruleVersion}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+		</where>
+	</select>
+
+
+	<select id="queryInField"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="java.util.Map">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+		<where>
+
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="appName != null">and app_name=#{appName}</if>
+			<if test="appRequestId != null">and app_request_id=#{appRequestId}</if>
+			<if test="appCallBack != null">and app_call_back=#{appCallBack}</if>
+			<if test="appParams != null">and app_params=#{appParams}</if>
+			<if test="beginTime != null">and begin_time=#{beginTime}</if>
+			<if test="endTime != null">and end_time=#{endTime}</if>
+			<if test="assignStep != null">and assign_step=#{assignStep}</if>
+			<if test="status != null">and status=#{status}</if>
+			<if test="failTimes != null">and fail_times=#{failTimes}</if>
+			<if test="priority != null">and priority=#{priority}</if>
+			<if test="channel != null">and channel=#{channel}</if>
+			<if test="execTime != null">and exec_time=#{execTime}</if>
+			<if test="sourceDetail != null">and source_detail=#{sourceDetail}</if>
+			<if test="endStep != null">and end_step=#{endStep}</if>
+			<if test="ruleVersion != null">and rule_version=#{ruleVersion}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+			<if test="addtime != null">and addtime=#{addtime}</if>
+
+			<if test="productTypeList != null">
+				and product_type in
+				<foreach collection="productTypeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="appNameList != null">
+				and app_name in
+				<foreach collection="appNameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="appRequestIdList != null">
+				and app_request_id in
+				<foreach collection="appRequestIdList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="appCallBackList != null">
+				and app_call_back in
+				<foreach collection="appCallBackList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="appParamsList != null">
+				and app_params in
+				<foreach collection="appParamsList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="beginTimeList != null">
+				and begin_time in
+				<foreach collection="beginTimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="endTimeList != null">
+				and end_time in
+				<foreach collection="endTimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="assignStepList != null">
+				and assign_step in
+				<foreach collection="assignStepList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="statusList != null">
+				and status in
+				<foreach collection="statusList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="failTimesList != null">
+				and fail_times in
+				<foreach collection="failTimesList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="priorityList != null">
+				and priority in
+				<foreach collection="priorityList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="channelList != null">
+				and channel in
+				<foreach collection="channelList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="execTimeList != null">
+				and exec_time in
+				<foreach collection="execTimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="sourceDetailList != null">
+				and source_detail in
+				<foreach collection="sourceDetailList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="endStepList != null">
+				and end_step in
+				<foreach collection="endStepList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="ruleVersionList != null">
+				and rule_version in
+				<foreach collection="ruleVersionList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="memoList != null">
+				and memo in
+				<foreach collection="memoList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="addtimeList != null">
+				and addtime in
+				<foreach collection="addtimeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="queryByAssignStep"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="java.lang.Integer">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+		where assign_step = #{assignStep}
+	</select>
+
+	<select id="queryCountByAssignStep" resultType="int"
+		parameterType="java.lang.Integer">
+		select count(1) from eng_task_info
+		where assign_step = #{assignStep}
+	</select>
+
+	<select id="queryLastOneByAssignStep"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="java.lang.Integer">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+		where assign_step = #{assignStep} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeAssignStep"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="java.util.List">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+		where assign_step in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeAssignStep" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_task_info
+		where assign_step in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+
+	<!-- ****************************************************************************** -->
+
+	<!-- 新表定时任务扫描查询 -->
+	<select id="getNeedAssignTaskList"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="int"><![CDATA[
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+			where assign_step = 0 
+			and fail_times <= 3 
+			and FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y%m%d%H%i%s') >= exec_time 
+			order by priority desc
+			LIMIT #{assignNum}
+	]]></select>
+
+	<!-- 未分配状态更新成被分配中状态 -->
+	<update id="updateTaskAssigningFlag" parameterType="java.util.List">
+		UPDATE eng_task_info set assign_step = 1
+		WHERE id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<!-- 将错误次数小于3的任务状态更新成可以被分配 -->
+	<update id="updateFailTaskAssignFlag"><![CDATA[
+		UPDATE eng_task_info set assign_step = 0
+			WHERE status = '3' and fail_times <= 3  and assign_step = 2 
+				and begin_time <= FROM_UNIXTIME(UNIX_TIMESTAMP(NOW() - INTERVAL 1 HOUR), '%Y%m%d%H%i%s')
+				and begin_time >= FROM_UNIXTIME(UNIX_TIMESTAMP(NOW() - INTERVAL 2 HOUR), '%Y%m%d%H%i%s')
+	]]></update>
+
+	<!-- 将被中断的任务状态更新成可以被分配 -->
+	<update id="updateInterruptTaskAssignFlag"><![CDATA[
+		UPDATE eng_task_info set assign_step = 0
+			WHERE status = '1' and assign_step = 2 
+				and begin_time <= FROM_UNIXTIME(UNIX_TIMESTAMP(NOW() - INTERVAL 1 HOUR), '%Y%m%d%H%i%s')
+				and begin_time >= FROM_UNIXTIME(UNIX_TIMESTAMP(NOW() - INTERVAL 2 HOUR), '%Y%m%d%H%i%s')
+	]]></update>
+
+	<select id="queryTaskCondition"
+		resultType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo"
+		parameterType="com.mobanker.engine.framkwork.data.entity.EngineTaskInfo">
+		select id as id,product_type as productType,app_name as
+		appName,app_request_id as appRequestId,app_call_back as
+		appCallBack,app_params as appParams,begin_time as beginTime,end_time
+		as endTime,assign_step as assignStep,status as status,fail_times as
+		failTimes,priority as priority,channel as channel,exec_time as
+		execTime,source_detail as sourceDetail,end_step as
+		endStep,rule_version as ruleVersion,memo as memo,addtime as addtime
+		from eng_task_info
+			where product_type = #{productType} 
+			and addtime between #{beginTime} and #{endTime}									
+ 			<if test="appRequestId != null">and app_request_id=#{appRequestId}</if>			
+			<if test="assignStep != null">and assign_step=#{assignStep}</if>
+			<if test="status != null">and status=#{status}</if>																			
+			<if test="ruleVersion != null">and rule_version=#{ruleVersion}</if>
+			<if test="memo != null">and memo=#{memo}</if>					
+			<if test="appParams != null">and app_params like CONCAT('%',#{appParams},'%')</if> 
+	</select>
+	
+</mapper>

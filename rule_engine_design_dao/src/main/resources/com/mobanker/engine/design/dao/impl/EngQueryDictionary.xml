@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobanker.engine.design.dao.EngQueryDictionaryDao">
+
+	<parameterMap type="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		id="EngQueryDictionary" />
+
+	<insert id="insert" parameterType="com.mobanker.engine.design.pojo.EngQueryDictionary">
+		INSERT INTO eng_query_dictionary
+		(query_domain,query_id,query_name,product_type,memo)
+		VALUES
+		(#{queryDomain},#{queryId},#{queryName},#{productType},#{memo})
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+	</insert>
+
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		INSERT INTO eng_query_dictionary
+		(query_domain,query_id,query_name,product_type,memo)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.queryDomain},#{item.queryId},#{item.queryName},#{item.productType},#{item.memo})
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.mobanker.engine.design.pojo.EngQueryDictionary">
+		update eng_query_dictionary
+		<set>
+			query_domain=#{queryDomain}, query_id=#{queryId},
+			query_name=#{queryName}, product_type=#{productType}, memo=#{memo},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateField" parameterType="com.mobanker.engine.design.pojo.EngQueryDictionary">
+		update eng_query_dictionary
+		<set>
+			<if test="queryDomain != null">query_domain=#{queryDomain},</if>
+			<if test="queryId != null">query_id=#{queryId},</if>
+			<if test="queryName != null">query_name=#{queryName},</if>
+			<if test="productType != null">product_type=#{productType},</if>
+			<if test="memo != null">memo=#{memo},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateFieldByField" parameterType="java.util.Map">
+		update eng_query_dictionary
+		<set>
+			<if test="des.queryDomain != null">query_domain=#{des.queryDomain},</if>
+			<if test="des.queryId != null">query_id=#{des.queryId},</if>
+			<if test="des.queryName != null">query_name=#{des.queryName},</if>
+			<if test="des.productType != null">product_type=#{des.productType},</if>
+			<if test="des.memo != null">memo=#{des.memo},</if>
+		</set>
+		<where>
+			<if
+				test="src.queryDomain==null and src.queryId==null and src.queryName==null and src.productType==null and src.memo==null ">and 1!=1</if>
+
+			<if test="src.queryDomain != null">and query_domain=#{src.queryDomain}</if>
+			<if test="src.queryId != null">and query_id=#{src.queryId}</if>
+			<if test="src.queryName != null">and query_name=#{src.queryName}</if>
+			<if test="src.productType != null">and product_type=#{src.productType}</if>
+			<if test="src.memo != null">and memo=#{src.memo}</if>
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="com.mobanker.engine.design.pojo.EngQueryDictionary">
+		delete from
+		eng_query_dictionary
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteById" parameterType="Long">
+		delete from
+		eng_query_dictionary
+		where id = #{id}
+	</delete>
+
+
+	<select id="get" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="Long">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		where id = #{id}
+	</select>
+
+
+	<select id="queryLastOneByField" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="com.mobanker.engine.design.pojo.EngQueryDictionary">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		<where>
+
+			<if test="queryDomain != null">and query_domain=#{queryDomain}</if>
+			<if test="queryId != null">and query_id=#{queryId}</if>
+			<if test="queryName != null">and query_name=#{queryName}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+		</where>
+		order by id desc limit 1
+	</select>
+
+	<select id="queryByField" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="com.mobanker.engine.design.pojo.EngQueryDictionary">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		<where>
+
+			<if test="queryDomain != null">and query_domain=#{queryDomain}</if>
+			<if test="queryId != null">and query_id=#{queryId}</if>
+			<if test="queryName != null">and query_name=#{queryName}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+		</where>
+	</select>
+
+
+	<select id="queryInField" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="java.util.Map">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		<where>
+
+			<if test="queryDomain != null">and query_domain=#{queryDomain}</if>
+			<if test="queryId != null">and query_id=#{queryId}</if>
+			<if test="queryName != null">and query_name=#{queryName}</if>
+			<if test="productType != null">and product_type=#{productType}</if>
+			<if test="memo != null">and memo=#{memo}</if>
+
+			<if test="queryDomainList != null">
+				and query_domain in
+				<foreach collection="queryDomainList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="queryIdList != null">
+				and query_id in
+				<foreach collection="queryIdList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="queryNameList != null">
+				and query_name in
+				<foreach collection="queryNameList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="productTypeList != null">
+				and product_type in
+				<foreach collection="productTypeList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="memoList != null">
+				and memo in
+				<foreach collection="memoList" index="index" item="item"
+					open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		</where>
+	</select>
+
+
+
+	<select id="queryByQueryId" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="java.lang.String">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		where query_id = #{queryId}
+	</select>
+
+	<select id="queryCountByQueryId" resultType="int" parameterType="java.lang.String">
+		select count(1) from eng_query_dictionary
+		where query_id = #{queryId}
+	</select>
+
+	<select id="queryLastOneByQueryId" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="java.lang.String">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		where query_id = #{queryId} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeQueryId" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="java.util.List">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		where query_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeQueryId" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_query_dictionary
+		where query_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+	<select id="queryByProductType" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="java.lang.String">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		where product_type = #{productType}
+	</select>
+
+	<select id="queryCountByProductType" resultType="int"
+		parameterType="java.lang.String">
+		select count(1) from eng_query_dictionary
+		where product_type = #{productType}
+	</select>
+
+	<select id="queryLastOneByProductType" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="java.lang.String">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		where product_type = #{productType} order by id desc limit 1
+	</select>
+
+	<select id="queryBySomeProductType" resultType="com.mobanker.engine.design.pojo.EngQueryDictionary"
+		parameterType="java.util.List">
+		select id as id,query_domain as queryDomain,query_id as
+		queryId,query_name as queryName,product_type as productType,memo as
+		memo from eng_query_dictionary
+		where product_type in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<select id="queryCountBySomeProductType" resultType="int"
+		parameterType="java.util.List">
+		select count(1) from eng_query_dictionary
+		where product_type in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">#{item}</foreach>
+	</select>
+
+	<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$-->
+	<delete id="deleteByProductType" parameterType="String">
+		delete from eng_query_dictionary
+		where product_type = #{productType}
+	</delete>
+
+</mapper>

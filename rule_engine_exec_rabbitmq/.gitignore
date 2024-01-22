@@ -1,0 +1,13 @@
+.classpath
+.project
+.settings/
+target/
+src/main/webapp/WEB-INF/classes/
+src/main/webapp/WEB-INF/lib/
+/build/
+democenter.rabbitMQ.iml
+.idea/
+/bin
+src/main/resources/conf.properties
+/target
+/target
